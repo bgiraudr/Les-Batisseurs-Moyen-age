@@ -1,0 +1,38 @@
+#!/bin/sh
+
+var=$(du -a ../src | awk '/java/ {print $2}' | wc -l)
+if [ -z "$1" ]
+then 
+    if (( $var > 1 ))
+    then 
+        ls ../src/*.java | cut -d/ -f3 | cut -d. -f1
+        read -p 'Vous souhaitez executer ? : ' choix
+        javac -d ../class ../src/"$choix".java
+        java -Xss20000000 "$choix"
+    else 
+        javac -d ../class ../src/*.java
+        java -Xss20000000 $(ls ../src/*.java | cut -d/ -f3 | cut -d. -f1)
+    fi
+elif [ "$1" = "all" ]
+then 
+    du -a ../src | awk '/java/ {print $2}' | xargs -r javac -d ../class
+elif [ "$1" = "javadoc" ]
+then
+    du -a ../src | awk '/java/ {print $2}' | xargs -r javadoc -private -author -d ../javaDoc
+elif [ "$1" = "compress" ]
+then
+    number=$(pwd | rev | cut -d/ -f2 | rev)
+    du -a ../src | awk '/java/ {print $2}' | xargs -r javadoc -private -author -d ../javaDoc
+    cd ../src
+    zip -r ../GIRAUD-RENARD-$number *
+    cd ..
+    zip -r GIRAUD-RENARD-$number javaDoc/*
+else
+    if [ "$2" = "a" ]
+    then 
+        du -a ../src | awk '/java/ {print $2}' | xargs -r javac -d ../class
+    else
+         javac -d ../class ../src/"$1".java
+    fi
+    java -Xss20000000 "$1"
+fi
