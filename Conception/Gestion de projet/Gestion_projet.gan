@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Projet de Programmation" company="" webLink="http://" view-date="2021-03-22" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="3.1.3101" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet de Programmation" company="" webLink="http://" view-date="2021-03-22" view-index="0" gantt-divider-location="401" resource-divider-location="300" version="3.1.3101" locale="fr_FR">
     <description/>
     <view zooming-state="default:6" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="158" order="0"/>
-        <field id="tpd4" name="Date de début" width="74" order="1"/>
-        <field id="tpd5" name="Date de fin" width="64" order="2"/>
+        <field id="tpd3" name="Nom" width="171" order="0"/>
+        <field id="tpd4" name="Date de début" width="97" order="1"/>
+        <field id="tpd5" name="Date de fin" width="84" order="2"/>
+        <field id="tpd6" name="Durée" width="45" order="3"/>
         <option id="color.recent">
-            <![CDATA[#9900ff #00ccff #00ff00 #009999]]>
+            <![CDATA[#ff0000 #00cc33 #000000 #ccccff #999999 #ff6666 #9900ff #00ccff #00ff00 #009999]]>
         </option>
     </view>
     <view id="resource-table">
@@ -38,6 +39,11 @@
         <date year="2021" month="5" date="7" type="HOLIDAY"/>
         <date year="2021" month="5" date="8" type="HOLIDAY"/>
         <date year="2021" month="5" date="9" type="HOLIDAY"/>
+        <date year="2021" month="6" date="5" type="WORKING_DAY" color="#ccccff"/>
+        <date year="2021" month="6" date="6" type="WORKING_DAY" color="#ccccff"/>
+        <date year="2021" month="6" date="7" type="WORKING_DAY" color="#ccccff"/>
+        <date year="2021" month="6" date="8" type="WORKING_DAY" color="#ccccff"/>
+        <date year="2021" month="6" date="9" type="WORKING_DAY" color="#ccccff"/>
     </calendars>
     <tasks empty-milestones="true">
         <taskproperties>
@@ -52,10 +58,10 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="2" name="Début du projet" color="#8cb6ce" meeting="true" start="2021-03-30" duration="0" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
+        <task id="2" name="Début et découverte du projet" color="#8cb6ce" meeting="false" start="2021-03-30" duration="5" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
             <depend id="30" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="30" name="Analyse" color="#009999" meeting="false" start="2021-04-05" duration="14" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
+        <task id="30" name="Cahier des charges" color="#000000" meeting="false" start="2021-04-05" duration="18" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
             <depend id="37" type="2" difference="0" hardness="Strong"/>
             <task id="31" name="Présentation de l'équipe et du contexte" color="#8cb6ce" meeting="false" start="2021-04-05" duration="1" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
                 <depend id="64" type="2" difference="0" hardness="Strong"/>
@@ -70,35 +76,61 @@
             <task id="33" name="Plan de tests de l'application" color="#8cb6ce" meeting="false" start="2021-04-14" duration="1" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
                 <depend id="64" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="64" name="Mise en page du rendu" meeting="false" start="2021-04-15" duration="1" complete="0" expand="true"/>
-            <task id="35" name="rendu cahier des charges" color="#8cb6ce" meeting="true" start="2021-04-19" duration="0" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
+            <task id="64" name="Mise en page" color="#8cb6ce" meeting="false" start="2021-04-15" duration="1" complete="0" thirdDate="2021-04-15" thirdDate-constraint="0" expand="true"/>
+            <task id="35" name="rendu cahier des charges" color="#ff0000" meeting="true" start="2021-04-19" duration="0" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true">
+                <depend id="15" type="2" difference="0" hardness="Strong"/>
                 <depend id="41" type="2" difference="13" hardness="Strong"/>
+                <depend id="124" type="2" difference="3" hardness="Strong"/>
             </task>
+            <task id="124" name="Évaluation" color="#8cb6ce" meeting="false" start="2021-04-22" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="37" name="Conception" color="#9900ff" meeting="false" start="2021-05-18" duration="18" complete="0" thirdDate="2021-05-18" thirdDate-constraint="0" expand="true">
+        <task id="37" name="Conception" color="#000000" meeting="false" start="2021-05-18" duration="24" complete="0" thirdDate="2021-05-18" thirdDate-constraint="0" expand="true">
             <task id="41" name="Création diagramme de classe d'Analyse" color="#8cb6ce" meeting="false" start="2021-05-18" duration="6" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true">
                 <depend id="42" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="42" name="Création diagramme de classe de Conception" color="#8cb6ce" meeting="false" start="2021-05-24" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true">
+            <task id="42" name="Création diagramme de classe de Conception" color="#8cb6ce" meeting="false" start="2021-05-24" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true">
                 <depend id="96" type="2" difference="5" hardness="Strong"/>
             </task>
-            <task id="96" name="Diagramme boite noire + build.xml" color="#8cb6ce" meeting="false" start="2021-06-02" duration="2" complete="0" thirdDate="2021-05-26" thirdDate-constraint="0" expand="true"/>
-            <task id="117" name="Oral de gestion de projet" color="#8cb6ce" meeting="true" start="2021-06-02" duration="0" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true"/>
-            <task id="43" name="Rendu cahier d'analyse et de conception" color="#8cb6ce" meeting="true" start="2021-06-05" duration="0" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-                <depend id="109" type="2" difference="0" hardness="Strong"/>
+            <task id="96" name="Diagramme boite noire + build.xml" color="#8cb6ce" meeting="false" start="2021-05-31" duration="4" complete="0" thirdDate="2021-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="131" type="2" difference="0" hardness="Strong"/>
             </task>
+            <task id="131" name="Mise en page" meeting="false" start="2021-06-04" duration="1" complete="0" expand="true"/>
+            <task id="43" name="Rendu cahier d'analyse et de conception" color="#ff0000" meeting="true" start="2021-06-05" duration="0" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+                <depend id="15" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="133" name="Évaluation" color="#8cb6ce" meeting="false" start="2021-06-10" duration="1" complete="0" thirdDate="2021-06-05" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="108" name="Programmation" color="#00ccff" meeting="false" start="2021-06-05" duration="18" complete="0" thirdDate="2021-06-05" thirdDate-constraint="0" expand="true">
-            <task id="109" name="Programmation des fonctionnalités essentielles" color="#8cb6ce" meeting="false" start="2021-06-05" duration="13" complete="0" thirdDate="2021-06-05" thirdDate-constraint="0" expand="true">
+        <task id="117" name="Oral de gestion de projet" color="#00cc33" meeting="false" start="2021-05-27" duration="4" complete="0" thirdDate="2021-03-30" thirdDate-constraint="0" expand="true"/>
+        <task id="108" name="Programmation" color="#000000" meeting="false" start="2021-06-10" duration="13" complete="0" thirdDate="2021-06-05" thirdDate-constraint="0" expand="true">
+            <task id="109" name="fonctionnalités essentielles" color="#8cb6ce" meeting="false" start="2021-06-10" duration="8" complete="0" thirdDate="2021-06-05" thirdDate-constraint="0" expand="true">
                 <depend id="110" type="2" difference="0" hardness="Strong"/>
+                <depend id="144" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="110" name="Programmation des fonctionnalités optionnelles" color="#8cb6ce" meeting="false" start="2021-06-18" duration="5" complete="0" thirdDate="2021-06-20" thirdDate-constraint="0" expand="true"/>
-            <task id="111" name="Rendu projet final" color="#8cb6ce" meeting="true" start="2021-06-23" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
-                <depend id="101" type="2" difference="0" hardness="Strong"/>
+            <task id="110" name="fonctionnalités optionnelles" color="#8cb6ce" meeting="false" start="2021-06-18" duration="3" complete="0" thirdDate="2021-06-20" thirdDate-constraint="0" expand="true"/>
+            <task id="143" name="Interfaces" color="#8cb6ce" meeting="false" start="2021-06-10" duration="10" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
+            <task id="144" name="Tests et javadoc" color="#8cb6ce" meeting="false" start="2021-06-18" duration="4" complete="0" thirdDate="2021-06-23" thirdDate-constraint="0" expand="true"/>
+            <task id="165" name="Préparation du rendu" color="#8cb6ce" meeting="false" start="2021-06-22" duration="1" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <depend id="111" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="111" name="Rendu développement" color="#ff0000" meeting="true" start="2021-06-23" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <depend id="15" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="101" name="Exercice de communication" color="#8cb6ce" meeting="false" start="2021-06-23" duration="1" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
-        <task id="15" name="Fin du projet" color="#8cb6ce" meeting="true" start="2021-06-24" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
+        <task id="101" name="Exercice de communication" color="#000000" meeting="false" start="2021-06-19" duration="5" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+            <task id="171" name="Texte" color="#00cc33" meeting="false" start="2021-06-19" duration="2" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <depend id="169" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="169" name="Tournage" color="#00cc33" meeting="false" start="2021-06-21" duration="1" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <depend id="170" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="170" name="Montage" color="#00cc33" meeting="false" start="2021-06-22" duration="2" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <depend id="172" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="172" name="Rendu" color="#ff0000" meeting="true" start="2021-06-24" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <depend id="15" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="15" name="Fin du projet" color="#ff0000" meeting="true" start="2021-06-24" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
