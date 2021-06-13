@@ -1,0 +1,71 @@
+<project name="LesBatisseurs" default="run" basedir=".">
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="jar"  location="${build}/jar"/>
+	<property name="class"  location="${build}/class"/>
+	<property name="javadoc"  location="${build}/javadoc"/>
+	<property name="test" value="${build}/test"/>
+	<property name="mainClass" value="Batisseurs"/>
+	<property name="jarName" value="${mainClass}"/>
+
+	<target name="init">
+		<mkdir dir="${build}"/>
+		<mkdir dir="${jar}"/>
+		<mkdir dir="${class}"/>
+		<mkdir dir="${test}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${class}" includeantruntime="false">
+			<exclude name="test/**"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+        <jar jarfile="${jar}/${jarName}.jar" basedir="${class}">
+            <manifest>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+        </jar>
+    </target>
+
+	<target name="run" depends="jar">
+		<java jar="${jar}/${jarName}.jar" fork="true"/>
+	</target>
+
+	<target name="javadoc">
+		<delete dir="${javadoc}"/>
+		<javadoc author="true"
+				 destdir="${javadoc}">
+			<fileset dir="${src}">
+				<include name="**"/>
+			</fileset>
+		</javadoc>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<javac srcdir="${src}/test" destdir="${test}" includeantruntime="true">
+			<classpath>
+				<pathelement path="${class}"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="compile-test">
+		<junit printsummary="on" haltonfailure="off" fork="true" includeantruntime="true">
+			<classpath>
+				<pathelement path="${test}"/>
+				<pathelement path="${class}"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+			<formatter type="brief"/>
+			<batchtest todir="${test}">
+				<fileset dir="${src}" includes="test/*.java"/>
+			</batchtest>
+		</junit>
+	</target>
+</project>
