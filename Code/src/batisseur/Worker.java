@@ -1,6 +1,6 @@
 package batisseur;
 
-public class Worker extends Card {
+public class Worker extends Card implements IWorker {
 
 	private int cost;
 
@@ -13,8 +13,8 @@ public class Worker extends Card {
 	 * @param tile the number of tile it product
 	 * @param cost the salary
 	 */
-	public Worker(String name, int wood, int stone, int knowledge, int tile, int cost) {
-		super(name, wood, stone, knowledge, tile);
+	public Worker(String name, int stone, int wood, int knowledge, int tile, int cost) {
+		super(name, stone, wood, knowledge, tile);
 		if(cost >= 0) {
 			this.cost = cost;
 		} else {

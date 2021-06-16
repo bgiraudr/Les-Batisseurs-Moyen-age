@@ -2,12 +2,8 @@ package test;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import batisseur.AutoPlayer;
-import batisseur.Player;
-import batisseur.Difficulty;
-import batisseur.Worker;
-import batisseur.Building;
-import batisseur.Board;
+import batisseur.*;
+
 
 import java.util.ArrayList;
 
@@ -115,14 +111,14 @@ public class AutoPlayerTest {
         p.workerToBuilding(w1,b1);
         assertTrue(p.getStartedBuilding().contains(b1));
         assertFalse(p.getBuildingsCards().contains(b1));
-        ArrayList<Worker> worker = b1.getWorkerOn();
+        ArrayList<Card> worker = b1.getWorkerOn();
         assertTrue(b1.getWorkerOn().contains(w1));
     }
 
     @Test()
     public void getBuildingsCards() {
         Building b2 = new Building("name",1,2,3,0,3,5);
-        ArrayList<Building> arr = new ArrayList<Building>();
+        ArrayList<IBuilding> arr = new ArrayList<IBuilding>();
         arr.add(b2);
         p.addBuilding(b2);
         assertEquals(arr,p.getBuildingsCards());

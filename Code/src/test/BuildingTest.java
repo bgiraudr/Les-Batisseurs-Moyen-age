@@ -2,8 +2,7 @@ package test;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import batisseur.Building;
-import batisseur.Worker;
+import batisseur.*;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class BuildingTest {
 
     @Test()
     public void getWorkerOn() {
-        ArrayList<Worker> workerOn = new ArrayList<Worker>();
+        ArrayList<IWorker> workerOn = new ArrayList<IWorker>();
         Worker w1 = new Worker("Test",0,1,2,3,4);
         b.addWorkerOn(w1);
         workerOn.add(w1);

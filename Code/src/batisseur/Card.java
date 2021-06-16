@@ -16,7 +16,7 @@ public abstract class Card {
 	 * @param knowledge the number of knowledge
 	 * @param tile the number of tile
 	 */
-	public Card(String name, int wood, int stone, int knowledge, int tile) {
+	public Card(String name, int stone, int wood, int knowledge, int tile) {
 		if(name != null) {
 			this.name = name;
 			this.wood = wood;

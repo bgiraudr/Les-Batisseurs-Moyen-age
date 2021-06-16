@@ -9,9 +9,9 @@ public abstract class Player {
 	private int action;
 	private int coin;
 
-	private ArrayList<Worker> worker_cards;
-	private ArrayList<Building> building_cards;
-	private ArrayList<Building> started_buildings;
+	private ArrayList<IWorker> worker_cards;
+	private ArrayList<IBuilding> building_cards;
+	private ArrayList<IBuilding> started_buildings;
 	private Board board;
 
 	/**
@@ -26,9 +26,9 @@ public abstract class Player {
 
 			this.action = 3;
 
-			this.worker_cards = new ArrayList<Worker>();
-			this.building_cards = new ArrayList<Building>();
-			this.started_buildings = new ArrayList<Building>();
+			this.worker_cards = new ArrayList<IWorker>();
+			this.building_cards = new ArrayList<IBuilding>();
+			this.started_buildings = new ArrayList<IBuilding>();
 		}
 	}
 
@@ -44,7 +44,7 @@ public abstract class Player {
 	 * add a building to your cards
 	 * @param building the building to add
 	 **/
-	public void addBuilding(Building building) {
+	public void addBuilding(IBuilding building) {
 		if(building != null) {
 			this.building_cards.add(building);
 		}
@@ -54,7 +54,7 @@ public abstract class Player {
 	 * remove a building from your cards
 	 * @param building the building to remove
 	 **/
-	public void removeBuilding(Building building) {
+	public void removeBuilding(IBuilding building) {
 		if(building != null) {
 			this.building_cards.remove(building);
 		}
@@ -64,7 +64,7 @@ public abstract class Player {
 	 * open a building and add it to the arraylist
 	 * @param building
 	 */
-	public void openBuilding(Building building) {
+	public void openBuilding(IBuilding building) {
 		this.started_buildings.add(building);
 		this.building_cards.remove(building);
 	}
@@ -73,7 +73,7 @@ public abstract class Player {
 	 * hire a new worker
 	 * @param worker
 	 */
-	public void hireWorker(Worker worker) {
+	public void hireWorker(IWorker worker) {
 		if(this.coin-worker.getCost() >= 0) {
 			this.worker_cards.add(worker);
 			this.coin -= worker.getCost();
@@ -84,7 +84,7 @@ public abstract class Player {
 	 * get all the worker cards of the player
 	 * @return all the worker cards of the player
 	 **/
-	public ArrayList<Worker> getWorkerCards() {
+	public ArrayList<IWorker> getWorkerCards() {
 		return this.worker_cards;
 	}
 
@@ -92,7 +92,7 @@ public abstract class Player {
 	 * get all the building cards of the player
 	 * @return all the building cards of the player
 	 **/
-	public ArrayList<Building> getBuildingsCards() {
+	public ArrayList<IBuilding> getBuildingsCards() {
 		return this.building_cards;
 	}
 
@@ -100,7 +100,7 @@ public abstract class Player {
 	 * get all the started building cards of the player
 	 * @return all the building cards of the player
 	 **/
-	public ArrayList<Building> getStartedBuilding() {
+	public ArrayList<IBuilding> getStartedBuilding() {
 		return this.started_buildings;
 	}
 
@@ -109,7 +109,7 @@ public abstract class Player {
 	 * @param building
 	 * @param worker
 	 */
-	public void workerToBuilding(Worker worker, Building building) {
+	public void workerToBuilding(IWorker worker, IBuilding building) {
 		if(this.started_buildings.contains(building)) {
 			building.addWorkerOn(worker);
 		}

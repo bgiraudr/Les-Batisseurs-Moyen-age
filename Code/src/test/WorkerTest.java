@@ -2,7 +2,7 @@ package test;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import batisseur.Worker;
+import batisseur.*;
 
 import java.util.ArrayList;
 
