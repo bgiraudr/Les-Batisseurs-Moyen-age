@@ -94,6 +94,10 @@ public class Building extends Card implements IBuilding {
 		this.point = point;
 	}
 
+	/**
+	 * check if the building is finished
+	 * @return true if the building is finished
+	 **/
 	public boolean isConstruct() {
 		boolean ret = true;
 		int[] value = checkRessources();
@@ -107,6 +111,10 @@ public class Building extends Card implements IBuilding {
 		return ret;
 	}
 
+	/**
+	 * get the progress that the building is missing
+	 * @return an array containing the progress that the building is missing
+	 **/
 	public int[] checkRessources() {
 		int[] ret = new int[4];
 		int sumStone = 0;

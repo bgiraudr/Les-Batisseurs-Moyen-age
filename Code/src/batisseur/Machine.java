@@ -101,22 +101,42 @@ public class Machine extends Card implements IWorker, IBuilding {
 		this.cost = cost;
 	}
 
+	/**
+	 * get the wood the machine will product
+	 * @return the wood construct value
+	 **/
 	public int getWoodConstruct() {
 		return this.woodConstruct;
 	}
 
+	/**
+	 * get the stone the machine will product
+	 * @return the stone construct value
+	 **/
 	public int getStoneConstruct() {
 		return this.stoneConstruct;
 	}
 
+	/**
+	 * get the knowledge the machine will product
+	 * @return the knowledge construct value
+	 **/
 	public int getKnowledgeConstruct() {
 		return this.knowledgeConstruct;
 	}
 
+	/**
+	 * get the tile the machine will product
+	 * @return the tile construct value
+	 **/
 	public int getTileConstruct() {
 		return this.tileConstruct;
 	}
 
+	/**
+	 * check if the building is finished
+	 * @return true if the building is finished
+	 **/
 	public boolean isConstruct() {
 		boolean ret = false;
 		for(IWorker worker : this.workerOn) {
@@ -156,6 +176,10 @@ public class Machine extends Card implements IWorker, IBuilding {
 		return ret;
 	}
 
+	/**
+	 * get the progress that the building is missing
+	 * @return an array containing the progress that the building is missing
+	 **/
 	public int[] checkRessources() {
 		int[] ret = new int[4];
 		int sumStone = 0;

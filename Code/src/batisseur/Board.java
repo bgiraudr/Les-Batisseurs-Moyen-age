@@ -38,6 +38,7 @@ public class Board {
 
 	/**
 	 * create all the cards using the file
+	 * @param fileName the source file
 	 **/
 	public void createWorkerCards(String fileName) {
 		try {
@@ -63,6 +64,7 @@ public class Board {
 
 	/**
 	 * create all the cards using the file
+	 * @param fileName the source file
 	 **/
 	public void createBuildingCards(String fileName) {
 		try {
@@ -89,6 +91,7 @@ public class Board {
 
 	/**
 	 * create all the cards using the file
+	 * @param fileName the source file
 	 **/
 	public void createMachineCards(String fileName) {
 		try {
@@ -160,6 +163,9 @@ public class Board {
 		return randCard;
 	}
 
+	/**
+	 * generate the five board workers
+	 **/
 	public void generateBoardWorker() {
 		while(this.five_worker_cards.size() < 5) {
 			Card card = pickRandomCard(this.worker_cards);
@@ -168,6 +174,9 @@ public class Board {
 		}
 	}
 
+	/**
+	 * generate the five board buildings (include machine)
+	 **/
 	public void generateBoardBuilding() {
 		while(this.five_building_cards.size() < 5) {
 			Card card;

@@ -143,6 +143,10 @@ public abstract class Player {
 		
 	}
 
+	/**
+	 * check if a building is finished and if so add to the player
+	 * @param building the building
+	 **/
 	public void finishBuilding(IBuilding building) {
 		if(building.isConstruct()) {
 			this.coin += building.getCoin();

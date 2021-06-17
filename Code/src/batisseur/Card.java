@@ -70,6 +70,13 @@ public abstract class Card {
 
 	public abstract String toString();
 
+	/**
+	 * generate a good looking String for Card
+	 * @param in the String you want to modify
+	 * @param rightborder the value where you want to generate the border
+	 * @param border the char for the border. Most of the times : █
+	 * @return the new good looking string
+	 **/
 	public String goodString(String in, int rightborder, String border) {
 		String genString = border + " " + in;
 		genString += " ".repeat(rightborder-genString.length()-1) + border + "\n";

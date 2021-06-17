@@ -30,6 +30,10 @@ public class Worker extends Card implements IWorker {
 		return this.cost;
 	}
 
+	/**
+	 * set the cost value of the worker
+	 * @param cost the new cost
+	 **/
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
