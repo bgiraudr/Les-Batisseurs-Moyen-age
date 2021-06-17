@@ -3,10 +3,12 @@ package batisseur;
 import java.util.ArrayList;
 
 public interface IBuilding {
-	public ArrayList<Card> getWorkerOn();
+	public ArrayList<IWorker> getWorkerOn();
 	public void addWorkerOn(IWorker worker);
 	public void removeWorkerOn(IWorker worker);
 	public int getPoint();
+	public int getCoin();
 	public void setPoint(int point);
-	public boolean checkConstruct();
+	public int[] checkRessources();
+	public boolean isConstruct();
 }

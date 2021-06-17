@@ -24,7 +24,8 @@ public abstract class Player {
 			this.name = name;
 			this.board = board;
 
-			this.action = 3;
+			this.action = 3; //default value
+			this.coin = 10; //default value for a new player
 
 			this.worker_cards = new ArrayList<IWorker>();
 			this.building_cards = new ArrayList<IBuilding>();
@@ -41,12 +42,19 @@ public abstract class Player {
 	}
 
 	/**
-	 * add a building to your cards
+	 * add a building to your cards from the top 5
 	 * @param building the building to add
 	 **/
 	public void addBuilding(IBuilding building) {
-		if(building != null) {
-			this.building_cards.add(building);
+		if(building != null && this.board.getFiveBuildingCards().contains(building)) {
+			if(action > 0) {
+				this.building_cards.add(building);
+				this.board.getFiveBuildingCards().remove(building);
+				this.board.generateBoardBuilding();
+				removeAction(1);
+			} else {
+				System.err.println("addBuilding : you have 0 action left");
+			}
 		}
 	}
 
@@ -55,8 +63,8 @@ public abstract class Player {
 	 * @param building the building to remove
 	 **/
 	public void removeBuilding(IBuilding building) {
-		if(building != null) {
-			this.building_cards.remove(building);
+		if(building != null && this.building_cards.contains(building)) {
+			this.building_cards.remove((Card)building);
 		}
 	}
 
@@ -66,17 +74,29 @@ public abstract class Player {
 	 */
 	public void openBuilding(IBuilding building) {
 		this.started_buildings.add(building);
-		this.building_cards.remove(building);
 	}
 
 	/**
-	 * hire a new worker
+	 * hire a new worker from the 5 on the top
 	 * @param worker
 	 */
 	public void hireWorker(IWorker worker) {
-		if(this.coin-worker.getCost() >= 0) {
-			this.worker_cards.add(worker);
-			this.coin -= worker.getCost();
+		if(this.coin-worker.getCost() >= 0 && worker != null) {
+			if(this.action > 0) {
+				if(this.board.getFiveWorkerCards().contains(worker)) {
+					this.worker_cards.add(worker);
+					this.coin -= worker.getCost();
+					removeAction(1);
+					this.board.removeWorkerCards(worker);
+					this.board.generateBoardWorker();
+				} else {
+					System.err.println("hireWorker : The worker you want isn't on the board");
+				}
+			} else {
+				System.err.println("hireWorker : you have 0 action left");
+			}
+		} else {
+			System.err.println("hireWorker : You have too few coin ! " + worker.getCost() + " is needed and you have " + this.coin);
 		}
 	}
 
@@ -110,8 +130,28 @@ public abstract class Player {
 	 * @param worker
 	 */
 	public void workerToBuilding(IWorker worker, IBuilding building) {
-		if(this.started_buildings.contains(building)) {
+		if(this.worker_cards.contains(worker) && this.building_cards.contains(building)) {
 			building.addWorkerOn(worker);
+			this.worker_cards.remove(worker);
+			if(!this.started_buildings.contains(building)) {
+				openBuilding(building);
+			}
+			finishBuilding(building);
+		} else {
+			System.err.println("workerToBuilding : you don't own this worker or building");
+		}
+		
+	}
+
+	public void finishBuilding(IBuilding building) {
+		if(building.isConstruct()) {
+			this.coin += building.getCoin();
+			this.point += building.getPoint();
+			this.started_buildings.remove(building);
+			for(IWorker workerOn : building.getWorkerOn()) {
+				this.worker_cards.add(workerOn);
+			}
+			System.out.println(((Card)building).getName() + " is finished ! Well done");
 		}
 	}
 
@@ -120,14 +160,18 @@ public abstract class Player {
 	 * @param nbAction
 	 */
 	public void actionToCoins(int nbAction) {
-		if(nbAction == 1) {
-			this.coin += 1;
-		} else if(nbAction == 2) {
-			this.coin += 3;
-		} else if(nbAction == 3) {
-			this.coin += 6;
+		if(this.action - nbAction >= 0) {
+			if(nbAction == 1) {
+				this.coin += 1;
+			} else if(nbAction == 2) {
+				this.coin += 3;
+			} else if(nbAction == 3) {
+				this.coin += 6;
+			}
+			this.action -= nbAction;
+		} else {
+			System.err.println("actionToCoins : you have 0 action left");
 		}
-		this.action -= nbAction;
 	}
 
 	/**
@@ -138,6 +182,8 @@ public abstract class Player {
 		if(this.coin >= nbAction * 5) {
 			this.action += nbAction;
 			this.coin -= nbAction*5;
+		} else {
+			System.err.println("buyAction : You have too few coin ! " + nbAction*5 + " is needed and you have " + this.coin);
 		}
 	}
 
@@ -219,4 +265,8 @@ public abstract class Player {
 
 	//play
 	public abstract void play();
+
+	public String toString() {
+		return "[ " + this.name + " ] " + this.coin + " - " + this.point + " - " + this.action;
+	}
 }

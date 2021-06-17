@@ -5,8 +5,9 @@ import java.util.ArrayList;
 public class Machine extends Card implements IWorker, IBuilding {
 
 	private int point;
-	private ArrayList<Card> workerOn;
+	private ArrayList<IWorker> workerOn;
 	private int cost;
+	private int coin;
 
 	private int woodConstruct;
 	private int stoneConstruct;
@@ -31,11 +32,12 @@ public class Machine extends Card implements IWorker, IBuilding {
 		if(point >= 0 && woodConstruct >= 0 && stoneConstruct >= 0 && knowledgeConstruct >= 0 && tileConstruct >= 0) {
 			this.point = point;
 			this.cost = 0;
+			this.coin = 0;
 			this.woodConstruct = woodConstruct;
 			this.stoneConstruct = stoneConstruct;
 			this.knowledgeConstruct = knowledgeConstruct;
 			this.tileConstruct = tileConstruct;
-			this.workerOn = new ArrayList<Card>();
+			this.workerOn = new ArrayList<IWorker>();
 		}
 	}
 
@@ -43,7 +45,7 @@ public class Machine extends Card implements IWorker, IBuilding {
 	 * get the worker on
 	 * @return the arrayList containing all the worker assigned to the building
 	 **/
-	public ArrayList<Card> getWorkerOn() {
+	public ArrayList<IWorker> getWorkerOn() {
 		return this.workerOn;
 	}
 
@@ -52,7 +54,7 @@ public class Machine extends Card implements IWorker, IBuilding {
 	 * @param worker the worker you want to add on
 	 **/
 	public void addWorkerOn(IWorker worker) {
-		this.workerOn.add((Card)worker);
+		this.workerOn.add(worker);
 	}
 
 	/**
@@ -60,7 +62,7 @@ public class Machine extends Card implements IWorker, IBuilding {
 	 * @param worker the worker you want to remove from
 	 **/
 	public void removeWorkerOn(IWorker worker) {
-		this.workerOn.remove((Card)worker);
+		this.workerOn.remove(worker);
 	}
 
 	/**
@@ -77,6 +79,10 @@ public class Machine extends Card implements IWorker, IBuilding {
 	 **/
 	public void setPoint(int point) {
 		this.point = point;
+	}
+
+	public int getCoin() {
+		return this.coin;
 	}
 
 	/**
@@ -111,13 +117,13 @@ public class Machine extends Card implements IWorker, IBuilding {
 		return this.tileConstruct;
 	}
 
-	public boolean checkConstruct() {
+	public boolean isConstruct() {
 		boolean ret = false;
-		for(Card worker : this.workerOn) {
-			if(worker.getStone() >= this.getStone() &&
-				worker.getWood() >= this.getWood() &&
-				worker.getKnowledge() >= this.getKnowledge() &&
-				worker.getTile() >= this.getTile()) {
+		for(IWorker worker : this.workerOn) {
+			if(((Card)worker).getStone() >= this.getStone() &&
+				((Card)worker).getWood() >= this.getWood() &&
+				((Card)worker).getKnowledge() >= this.getKnowledge() &&
+				((Card)worker).getTile() >= this.getTile()) {
 				ret = true;
 			}
 		}
@@ -147,6 +153,25 @@ public class Machine extends Card implements IWorker, IBuilding {
 			ret[0] = this.tileConstruct + "";
 			ret[1] = "tuiles";
 		}
+		return ret;
+	}
+
+	public int[] checkRessources() {
+		int[] ret = new int[4];
+		int sumStone = 0;
+		int sumWood = 0;
+		int sumKnowledge = 0;
+		int sumTile = 0;
+		for(IWorker worker : this.workerOn) {
+			sumStone += ((Card)worker).getStone();
+			sumWood += ((Card)worker).getWood();
+			sumKnowledge += ((Card)worker).getKnowledge();
+			sumTile += ((Card)worker).getTile();
+		}
+		ret[0] = this.getStone() - sumStone;
+		ret[1] = this.getWood() - sumWood;
+		ret[2] = this.getKnowledge() - sumKnowledge;
+		ret[3] = this.getTile() - sumTile;
 		return ret;
 	}
 

@@ -6,7 +6,7 @@ public class Building extends Card implements IBuilding {
 
 	private int coin;
 	private int point;
-	private ArrayList<Card> workerOn;
+	private ArrayList<IWorker> workerOn;
 
 	/**
 	 * Create a new building card
@@ -23,7 +23,7 @@ public class Building extends Card implements IBuilding {
 		if(coin >=0 && point >=0) {
 			this.coin = coin;
 			this.point = point;
-			this.workerOn = new ArrayList<Card>();
+			this.workerOn = new ArrayList<IWorker>();
 		} else {
 			System.err.println("Building : coin or point invalid");
 		}
@@ -33,7 +33,7 @@ public class Building extends Card implements IBuilding {
 	 * get the worker on
 	 * @return the arrayList containing all the worker assigned to the building
 	 **/
-	public ArrayList<Card> getWorkerOn() {
+	public ArrayList<IWorker> getWorkerOn() {
 		return this.workerOn;
 	}
 
@@ -43,13 +43,13 @@ public class Building extends Card implements IBuilding {
 	 **/
 	public void addWorkerOn(IWorker worker) {
 		if(worker instanceof Machine) {
-			if(((Machine)(worker)).checkConstruct()) {
-				this.workerOn.add((Card)worker);
+			if(((Machine)(worker)).isConstruct()) {
+				this.workerOn.add(worker);
 			} else {
 				System.err.println("addWorkerOn : the current Machine is broken");
 			}
 		} else {
-			this.workerOn.add((Card)worker);
+			this.workerOn.add(worker);
 		}
 		
 	}
@@ -59,7 +59,7 @@ public class Building extends Card implements IBuilding {
 	 * @param worker the worker you want to remove from
 	 **/
 	public void removeWorkerOn(IWorker worker) {
-		this.workerOn.remove((Card)worker);
+		this.workerOn.remove(worker);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class Building extends Card implements IBuilding {
 		this.point = point;
 	}
 
-	public boolean checkConstruct() {
+	public boolean isConstruct() {
 		boolean ret = true;
 		int[] value = checkRessources();
 		int i = 0;
@@ -113,11 +113,11 @@ public class Building extends Card implements IBuilding {
 		int sumWood = 0;
 		int sumKnowledge = 0;
 		int sumTile = 0;
-		for(Card worker : this.workerOn) {
-			sumStone += worker.getStone();
-			sumWood += worker.getWood();
-			sumKnowledge += worker.getKnowledge();
-			sumTile += worker.getTile();
+		for(IWorker worker : this.workerOn) {
+			sumStone += ((Card)worker).getStone();
+			sumWood += ((Card)worker).getWood();
+			sumKnowledge += ((Card)worker).getKnowledge();
+			sumTile += ((Card)worker).getTile();
 		}
 		ret[0] = this.getStone() - sumStone;
 		ret[1] = this.getWood() - sumWood;

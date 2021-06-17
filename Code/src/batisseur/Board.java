@@ -14,8 +14,8 @@ public class Board {
 	private ArrayList<Card> building_cards;
 	private ArrayList<Card> machine_cards;
 
-	public ArrayList<Card> five_worker_cards;
-	public ArrayList<Card> five_building_cards;
+	public ArrayList<IWorker> five_worker_cards;
+	public ArrayList<IBuilding> five_building_cards;
 
 	private Random rand;
 
@@ -25,8 +25,8 @@ public class Board {
 		this.worker_cards = new ArrayList<Card>();
 		this.building_cards = new ArrayList<Card>();
 		this.machine_cards = new ArrayList<Card>();
-		this.five_worker_cards = new ArrayList<Card>();
-		this.five_building_cards = new ArrayList<Card>();
+		this.five_worker_cards = new ArrayList<IWorker>();
+		this.five_building_cards = new ArrayList<IBuilding>();
 
 		this.createWorkerCards("../data/ouvriers.txt");
 		this.createBuildingCards("../data/batiments.txt");
@@ -140,6 +140,10 @@ public class Board {
 		return this.machine_cards;
 	}
 
+	public void removeWorkerCards(IWorker worker) {
+		this.five_worker_cards.remove(worker);
+	}
+
 	/**
 	 * pick a random card on an array
 	 * @param array the arrayList of Card
@@ -160,7 +164,7 @@ public class Board {
 		while(this.five_worker_cards.size() < 5) {
 			Card card = pickRandomCard(this.worker_cards);
 			this.worker_cards.remove(card);
-			this.five_worker_cards.add(card);
+			this.five_worker_cards.add((IWorker)card);
 		}
 	}
 
@@ -175,7 +179,23 @@ public class Board {
 				card = pickRandomCard(this.building_cards);
 				this.building_cards.remove(card);
 			}
-			this.five_building_cards.add(card);
+			this.five_building_cards.add((IBuilding)card);
 		}
+	}
+
+	/**
+	 * get all of the five worker cards on the board
+	 * @return the arraylist containing the worker cards
+	 **/
+	public ArrayList<IWorker> getFiveWorkerCards() {
+		return this.five_worker_cards;
+	}
+
+	/**
+	 * get all of the five building cards on the board
+	 * @return the arraylist containing the building cards
+	 **/
+	public ArrayList<IBuilding> getFiveBuildingCards() {
+		return this.five_building_cards;
 	}
 }
