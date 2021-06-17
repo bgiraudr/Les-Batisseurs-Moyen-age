@@ -123,4 +123,46 @@ public class Machine extends Card implements IWorker, IBuilding {
 		}
 		return ret;
 	}
+
+	/**
+	 * get the buff of a machine
+	 * @return a list of String containing the information about the buff the machine gives
+	 * [number, title]
+	 **/
+	private String[] getMachineBuff() {
+		String ret[] = new String[2];
+		if(this.stoneConstruct > 0) {
+			ret[0] = this.stoneConstruct + "";
+			ret[1] = "pierres";
+		}
+		if(this.woodConstruct > 0) {
+			ret[0] = this.woodConstruct + "";
+			ret[1] = "bois";
+		}
+		if(this.knowledgeConstruct > 0) {
+			ret[0] = this.knowledgeConstruct + "";
+			ret[1] = "savoir";
+		}
+		if(this.tileConstruct > 0) {
+			ret[0] = this.tileConstruct + "";
+			ret[1] = "tuiles";
+		}
+		return ret;
+	}
+
+	public String toString() {
+		String top = "█  " + this.getName() + "  █";
+		int rightBorder = top.length();
+		String blackLine = "█".repeat(rightBorder);
+
+		String buffString = goodString("+" + getMachineBuff()[0] + " " + getMachineBuff()[1], rightBorder, "█");
+		String pointString = goodString(this.getPoint() + " points", rightBorder, "█");
+		String stoneString = goodString(this.getStone() + " pierres", rightBorder, "█");
+		String woodString = goodString(this.getWood() + " bois", rightBorder, "█");
+		String knowledgeString = goodString(this.getKnowledge() + " savoir", rightBorder, "█");
+		String tileString = goodString(this.getTile() + " tuiles", rightBorder, "█");
+
+		String ret = blackLine + "\n" + top + "\n" + blackLine + "\n" + buffString + pointString + blackLine + "\n" + stoneString + woodString + knowledgeString + tileString + blackLine + "\n";
+		return ret;
+	}
 }

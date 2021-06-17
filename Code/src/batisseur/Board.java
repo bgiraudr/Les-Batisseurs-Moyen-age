@@ -14,6 +14,9 @@ public class Board {
 	private ArrayList<Card> building_cards;
 	private ArrayList<Card> machine_cards;
 
+	public ArrayList<Card> five_worker_cards;
+	public ArrayList<Card> five_building_cards;
+
 	private Random rand;
 
 	public Board() {
@@ -22,9 +25,15 @@ public class Board {
 		this.worker_cards = new ArrayList<Card>();
 		this.building_cards = new ArrayList<Card>();
 		this.machine_cards = new ArrayList<Card>();
+		this.five_worker_cards = new ArrayList<Card>();
+		this.five_building_cards = new ArrayList<Card>();
+
 		this.createWorkerCards("../data/ouvriers.txt");
 		this.createBuildingCards("../data/batiments.txt");
 		this.createMachineCards("../data/machines.txt");
+
+		this.generateBoardWorker();
+		this.generateBoardBuilding();
 	}
 
 	/**
@@ -131,6 +140,11 @@ public class Board {
 		return this.machine_cards;
 	}
 
+	/**
+	 * pick a random card on an array
+	 * @param array the arrayList of Card
+	 * @return the arraylist containing the building cards
+	 **/
 	public Card pickRandomCard(ArrayList<Card> array) {
 		Card randCard = null;
 		if(array != null) {
@@ -140,5 +154,28 @@ public class Board {
 			System.err.println("pickRandomCard : array null");
 		}
 		return randCard;
+	}
+
+	public void generateBoardWorker() {
+		while(this.five_worker_cards.size() < 5) {
+			Card card = pickRandomCard(this.worker_cards);
+			this.worker_cards.remove(card);
+			this.five_worker_cards.add(card);
+		}
+	}
+
+	public void generateBoardBuilding() {
+		while(this.five_building_cards.size() < 5) {
+			Card card;
+			int number = RandomInt.randomInt(1, this.building_cards.size() + this.machine_cards.size(), this.rand);
+			if(number < this.machine_cards.size()) {
+				card = pickRandomCard(this.machine_cards);
+				this.machine_cards.remove(card);
+			} else {
+				card = pickRandomCard(this.building_cards);
+				this.building_cards.remove(card);
+			}
+			this.five_building_cards.add(card);
+		}
 	}
 }

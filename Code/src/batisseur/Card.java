@@ -68,4 +68,11 @@ public abstract class Card {
 		return this.name;
 	}
 
+	public abstract String toString();
+
+	public String goodString(String in, int rightborder, String border) {
+		String genString = border + " " + in;
+		genString += " ".repeat(rightborder-genString.length()-1) + border + "\n";
+		return genString;
+	}
 }

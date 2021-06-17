@@ -126,4 +126,19 @@ public class Building extends Card implements IBuilding {
 		return ret;
 	}
 
+	public String toString() {
+		String top = "█  " + this.getName() + "  █";
+		int rightBorder = top.length();
+		String blackLine = "█".repeat(rightBorder);
+		String coinString = goodString(this.getCoin() + " écus", rightBorder, "█");
+		String pointString = goodString(this.getPoint() + " points", rightBorder, "█");
+		String stoneString = goodString(this.getStone() + " pierres", rightBorder, "█");
+		String woodString = goodString(this.getWood() + " bois", rightBorder, "█");
+		String knowledgeString = goodString(this.getKnowledge() + " savoir", rightBorder, "█");
+		String tileString = goodString(this.getTile() + " tuiles", rightBorder, "█");
+
+		String ret = blackLine + "\n" + top + "\n" + blackLine + "\n" + coinString + pointString + blackLine + "\n" + stoneString + woodString + knowledgeString + tileString + blackLine + "\n";
+		return ret;
+	}
+
 }

@@ -17,6 +17,12 @@ public class TestA {
 		b1.addWorkerOn(m1);
 		System.out.println(b1.checkConstruct());*/
 		Board b = new Board();
-		System.out.println(b.pickRandomCard(b.getMachineCards()).getName());
+		for(Card card : b.five_building_cards) {
+			System.out.println(card);
+		}
+
+		for(Card card : b.five_worker_cards) {
+			System.out.println(card);
+		}
 	}
 }

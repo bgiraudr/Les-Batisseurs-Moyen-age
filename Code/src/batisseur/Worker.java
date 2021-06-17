@@ -34,4 +34,18 @@ public class Worker extends Card implements IWorker {
 		this.cost = cost;
 	}
 
+	public String toString() {
+		String top = "█   " + this.getName() + "   █";
+		int rightBorder = top.length();
+		String blackLine = "█".repeat(rightBorder);
+
+		String coinString = goodString(this.getCost() + " écus", rightBorder, "█");
+		String stoneString = goodString(this.getStone() + " pierres", rightBorder, "█");
+		String woodString = goodString(this.getWood() + " bois", rightBorder, "█");
+		String knowledgeString = goodString(this.getKnowledge() + " savoir", rightBorder, "█");
+		String tileString = goodString(this.getTile() + " tuiles", rightBorder, "█");
+
+		String ret = blackLine + "\n" + top + "\n" + blackLine + "\n" + coinString + blackLine + "\n" + stoneString + woodString + knowledgeString + tileString + blackLine + "\n";
+		return ret;
+	}
 }

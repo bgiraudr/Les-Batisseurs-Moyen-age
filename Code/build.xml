@@ -36,6 +36,10 @@
 	<target name="run" depends="jar">
 		<java jar="${jar}/${jarName}.jar" fork="true"/>
 	</target>
+	
+	<target name="runF" depends="compile">
+		<java jar="${jar}/${jarName}.jar" fork="true"/>
+	</target>
 
 	<target name="javadoc">
 		<delete dir="${javadoc}"/>

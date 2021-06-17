@@ -2,7 +2,7 @@
 # Makefile pour compilation/execution de projets Java
 #
 
-SOURCES = $$(find ../src -name "*.java")
+SOURCES = $$(find ../src -name "*.java" | grep -v "/test/")
 CLASS_DIR = class
 JAVADOC_DIR = javaDoc
 DATA_DIR = data
@@ -24,7 +24,7 @@ javadoc: mkdirjavadoc compile
 	@javadoc -private -author -d ../$(JAVADOC_DIR) $(SOURCES)
 
 run: compile
-	@java -classpath ../$(CLASS_DIR) -Xss20000000 $(ARGS)
+	@java -classpath ../$(CLASS_DIR) $(ARGS)
 	
 zip: compile javadoc
 	zip -r ../$(NAME)-$(NAME_TP) ../src/
