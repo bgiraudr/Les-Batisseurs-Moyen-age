@@ -39,17 +39,20 @@ public class Worker extends Card implements IWorker {
 	}
 
 	public String toString() {
-		String top = "█   " + this.getName() + "   █";
-		int rightBorder = top.length();
-		String blackLine = "█".repeat(rightBorder);
+		int rightBorder = 30;
+		String topLine = "╭" + "─".repeat(rightBorder+2) + "╮\n";
+		String botLine = "╰" + "─".repeat(rightBorder+2) + "╯\n";
+		String transiLine = "├" + "─".repeat(rightBorder+2) + "┤\n";
 
-		String coinString = goodString(this.getCost() + " écus", rightBorder, "█");
-		String stoneString = goodString(this.getStone() + " pierres", rightBorder, "█");
-		String woodString = goodString(this.getWood() + " bois", rightBorder, "█");
-		String knowledgeString = goodString(this.getKnowledge() + " savoir", rightBorder, "█");
-		String tileString = goodString(this.getTile() + " tuiles", rightBorder, "█");
+		String top = centerString(rightBorder, this.getName());
+		String coinString = String.format("│ %-" + rightBorder + "s │\n", this.getCost() + " écus");
+		String stoneString = String.format("│ %-" + rightBorder + "s │\n", this.getStone() + " pierres");
+		String woodString = String.format("│ %-" + rightBorder + "s │\n", this.getWood() + " bois");
+		String knowledgeString = String.format("│ %-" + rightBorder + "s │\n", this.getKnowledge() + " savoir");
+		String tileString = String.format("│ %-" + rightBorder + "s │\n", this.getTile() + " tuiles");
 
-		String ret = blackLine + "\n" + top + "\n" + blackLine + "\n" + coinString + blackLine + "\n" + stoneString + woodString + knowledgeString + tileString + blackLine + "\n";
+		String ret = topLine + top + transiLine + coinString + transiLine + stoneString + woodString + knowledgeString + tileString + botLine;
+
 		return ret;
 	}
 }

@@ -17,25 +17,33 @@ public class TestA {
 		b1.addWorkerOn(m1);
 		System.out.println(b1.checkConstruct());*/
 		Board b = new Board();
+		b.printBoard();
+
+		HumanPlayer p = new HumanPlayer("Benjamin", b);
+		System.out.println(p);
 
 		/*for(IWorker c : b.getFiveWorkerCards()) {
 			System.out.println(c);
 		}*/
 
-		HumanPlayer p = new HumanPlayer("Benjamin", b);
+		/*HumanPlayer p = new HumanPlayer("Benjamin", b);
 
-		System.out.println(p);
+		//System.out.println(p);
 
 		p.setCoin(50);
 		p.buyAction(1);
 
 		p.hireWorker(b.getFiveWorkerCards().get(0));
 		p.hireWorker(b.getFiveWorkerCards().get(0));
-		p.hireWorker(b.getFiveWorkerCards().get(0));
 
-		/*for(IWorker c : b.getFiveWorkerCards()) {
+		for(IWorker c : b.getFiveWorkerCards()) {
 			System.out.println(c);
-		}*/
+		}
+
+		for(IBuilding c : b.getFiveBuildingCards()) {
+			System.out.println(c);
+		}
+
 		p.addBuilding(b.getFiveBuildingCards().get(0));
 		p.openBuilding(p.getBuildingsCards().get(0));
 		for(int i : p.getStartedBuilding().get(0).checkRessources()) {
@@ -65,6 +73,27 @@ public class TestA {
 		for(Card card : b.five_worker_cards) {
 			System.out.println(card);
 		}*/
+		/*Worker w1 = new Worker("name",1,2,3,0,3);
+		Worker w2 = new Worker("name2",1,0,1,2,2);
+		Worker w3 = new Worker("name3",1,1,0,0,1);
 
+		Building b1 = new Building("name",4,2,2,5,0,5);
+		Machine b2 = new Machine("Un instrument de mesure",4,2,2,5,0,5,3,4,2);
+
+		//System.out.println(b.getFiveBuildingCards().get(0));
+		System.out.println(b2);
+		p.hireWorker(w1);
+		System.out.println(p);
+		p.hireWorker(w2);
+		System.out.println(p);
+		p.addBuilding(b1);
+		System.out.println(p);
+		p.setAction(3);
+		p.addBuilding(b2);
+		p.workerToBuilding(w1,b1);
+		System.out.println(p);
+		p.workerToBuilding(w2,b2);
+		System.out.println(p);
+		//p.play();*/
 	}
 }

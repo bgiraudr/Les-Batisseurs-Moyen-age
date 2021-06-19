@@ -12,6 +12,9 @@ public abstract class Player {
 	private ArrayList<IWorker> worker_cards;
 	private ArrayList<IBuilding> building_cards;
 	private ArrayList<IBuilding> started_buildings;
+
+	private ArrayList<IBuilding> building_turn;
+
 	private Board board;
 
 	/**
@@ -30,6 +33,7 @@ public abstract class Player {
 			this.worker_cards = new ArrayList<IWorker>();
 			this.building_cards = new ArrayList<IBuilding>();
 			this.started_buildings = new ArrayList<IBuilding>();
+			this.building_turn = new ArrayList<IBuilding>();
 		}
 	}
 
@@ -55,6 +59,8 @@ public abstract class Player {
 			} else {
 				System.err.println("addBuilding : you have 0 action left");
 			}
+		} else {
+			System.err.println("addBuilding : building null or the building isn't on the board");
 		}
 	}
 
@@ -125,20 +131,49 @@ public abstract class Player {
 	}
 
 	/**
+	 * get all the building where you have insert a worker on during a turn
+	 * @return all the building cards of the player
+	 **/
+	public ArrayList<IBuilding> getBuildingTurn() {
+		return this.building_turn;
+	}
+
+	public Board getBoard() {
+		return this.board;
+	}
+
+	/**
 	 * make a worker work on a certain building
 	 * @param building
 	 * @param worker
 	 */
 	public void workerToBuilding(IWorker worker, IBuilding building) {
-		if(this.worker_cards.contains(worker) && this.building_cards.contains(building)) {
-			building.addWorkerOn(worker);
-			this.worker_cards.remove(worker);
-			if(!this.started_buildings.contains(building)) {
-				openBuilding(building);
+		if(worker != null && building != null) {
+			int remove = 0;
+			this.building_turn.add(building);
+			for(int i = 0; i < this.building_turn.size(); i++) {
+				if(this.building_turn.get(i) == building) {
+					remove++;
+				}
 			}
-			finishBuilding(building);
-		} else {
-			System.err.println("workerToBuilding : you don't own this worker or building");
+
+			if(this.action - remove >= 0) {
+				if(this.worker_cards.contains(worker) && this.building_cards.contains(building)) {
+					building.addWorkerOn(worker);
+					this.worker_cards.remove(worker);
+					
+					removeAction(remove);
+
+					if(!this.started_buildings.contains(building)) {
+						openBuilding(building);
+					}
+					finishBuilding(building);
+				} else {
+					System.err.println("workerToBuilding : you don't own this worker or building");
+				}
+			} else {
+				System.err.println("workerToBuilding : you don't have enough action left. You have " + this.action + ", you need " + remove);
+			}
 		}
 		
 	}
@@ -164,7 +199,11 @@ public abstract class Player {
 	 * @param nbAction
 	 */
 	public void actionToCoins(int nbAction) {
-		if(this.action - nbAction >= 0) {
+		if(this.action - nbAction >= 0 && nbAction > 0) {
+			if(nbAction > 3) {
+				nbAction = 3;
+				System.out.println("Trop d'action renseignée, vente de 3 actions.");
+			}
 			if(nbAction == 1) {
 				this.coin += 1;
 			} else if(nbAction == 2) {
@@ -174,7 +213,7 @@ public abstract class Player {
 			}
 			this.action -= nbAction;
 		} else {
-			System.err.println("actionToCoins : you have 0 action left");
+			System.err.println("actionToCoins : invalid nbAction or you don't have enough action to do this");
 		}
 	}
 
@@ -183,7 +222,7 @@ public abstract class Player {
 	 * @param nbAction
 	 */
 	public void buyAction(int nbAction) {
-		if(this.coin >= nbAction * 5) {
+		if(this.coin >= nbAction * 5 && nbAction > 0) {
 			this.action += nbAction;
 			this.coin -= nbAction*5;
 		} else {
@@ -270,7 +309,22 @@ public abstract class Player {
 	//play
 	public abstract void play();
 
+	public String centerString(int width, String s) {
+    	return String.format("│ %-" + width  + "s │\n", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
+	}
+
 	public String toString() {
-		return "[ " + this.name + " ] " + this.coin + " - " + this.point + " - " + this.action;
+		int rightBorder = 15;
+		String topLine = "╭" + "─".repeat(rightBorder+2) + "╮\n";
+		String botLine = "╰" + "─".repeat(rightBorder+2) + "╯\n";
+		String transiLine = "├" + "─".repeat(rightBorder+2) + "┤\n";
+
+		String top = centerString(rightBorder, "Ϧ " + this.getName());
+		String coinString = String.format("│ %-" + rightBorder + "s │\n", this.coin + " écus");
+		String pointString = String.format("│ %-" + rightBorder + "s │\n", this.point + " points");
+		String actionString = String.format("│ %-" + rightBorder + "s │\n", this.action + " actions");
+		String nbOuvrier = String.format("│ %-" + rightBorder + "s │\n", this.worker_cards.size() + " ouvriers");
+		String nbBatiment = String.format("│ %-" + rightBorder + "s │\n", this.building_cards.size() + " bâtiments");
+		return topLine + top + transiLine + coinString + pointString + actionString + transiLine + nbOuvrier + nbBatiment + botLine;
 	}
 }

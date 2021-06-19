@@ -6,7 +6,7 @@ import util.RandomInt;
 public class AutoPlayer extends Player {
 
 	private Random rand;
-	private Difficulty difficulty;
+	private static Difficulty difficulty = Difficulty.EASY;
 
 	/**
 	 * Create an autoplayer using the name and the difficulty you want
@@ -14,9 +14,8 @@ public class AutoPlayer extends Player {
 	 * @param board
 	 * @param difficulty
 	 */
-	public AutoPlayer(String name, Board board, Difficulty difficulty) {
+	public AutoPlayer(String name, Board board) {
 		super(name, board);
-		this.difficulty = difficulty;
 		this.rand = new Random();
 	}
 
@@ -32,14 +31,14 @@ public class AutoPlayer extends Player {
 	 * @return the difficulty
 	 **/
 	public Difficulty getDifficulty() {
-		return this.difficulty;
+		return difficulty;
 	}
 
 	/**
 	 * set the difficulty of the bot
-	 * @param difficulty the new difficulty
+	 * @param newDifficulty the new difficulty
 	 **/
-	public void setDifficulty(Difficulty difficulty) {
-		this.difficulty = difficulty;
+	public void setDifficulty(Difficulty newDifficulty) {
+		difficulty = newDifficulty;
 	}
 }

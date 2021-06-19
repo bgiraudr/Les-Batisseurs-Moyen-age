@@ -1,0 +1,13 @@
+╭───────────────────────────────────────────────────────────────╮
+│								│
+│  Bienvenue jeune bâtisseur !					│
+│  Veuillez renseigner un chiffre en fonction de votre souhait	│
+│								│
+│  1 - Lancer une partie					│
+│  2 - Charger une partie					│
+│  3 - Lire les règles						│
+│  4 - Paramètres						│
+│  5 - Basculer sur l'interface graphique			│
+│  6 - Quitter							│
+│								│
+╰───────────────────────────────────────────────────────────────╯

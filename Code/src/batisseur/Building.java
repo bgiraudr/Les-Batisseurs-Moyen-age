@@ -135,17 +135,21 @@ public class Building extends Card implements IBuilding {
 	}
 
 	public String toString() {
-		String top = "█  " + this.getName() + "  █";
-		int rightBorder = top.length();
-		String blackLine = "█".repeat(rightBorder);
-		String coinString = goodString(this.getCoin() + " écus", rightBorder, "█");
-		String pointString = goodString(this.getPoint() + " points", rightBorder, "█");
-		String stoneString = goodString(this.getStone() + " pierres", rightBorder, "█");
-		String woodString = goodString(this.getWood() + " bois", rightBorder, "█");
-		String knowledgeString = goodString(this.getKnowledge() + " savoir", rightBorder, "█");
-		String tileString = goodString(this.getTile() + " tuiles", rightBorder, "█");
+		int rightBorder = 30;
+		String topLine = "╭" + "─".repeat(rightBorder+2) + "╮\n";
+		String botLine = "╰" + "─".repeat(rightBorder+2) + "╯\n";
+		String transiLine = "├" + "─".repeat(rightBorder+2) + "┤\n";
 
-		String ret = blackLine + "\n" + top + "\n" + blackLine + "\n" + coinString + pointString + blackLine + "\n" + stoneString + woodString + knowledgeString + tileString + blackLine + "\n";
+		String top = centerString(rightBorder, this.getName());
+		String coinString = String.format("│ %-" + rightBorder + "s │\n", this.getCoin() + " écus");
+		String pointString = String.format("│ %-" + rightBorder + "s │\n", this.getPoint() + " points");
+		String stoneString = String.format("│ %-" + rightBorder + "s │\n", this.getStone() + " pierres");
+		String woodString = String.format("│ %-" + rightBorder + "s │\n", this.getWood() + " bois");
+		String knowledgeString = String.format("│ %-" + rightBorder + "s │\n", this.getKnowledge() + " savoir");
+		String tileString = String.format("│ %-" + rightBorder + "s │\n", this.getTile() + " tuiles");
+
+		String ret = topLine + top + transiLine + coinString + pointString + transiLine + stoneString + woodString + knowledgeString + tileString + botLine;
+
 		return ret;
 	}
 

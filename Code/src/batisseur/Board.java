@@ -28,9 +28,9 @@ public class Board {
 		this.five_worker_cards = new ArrayList<IWorker>();
 		this.five_building_cards = new ArrayList<IBuilding>();
 
-		this.createWorkerCards("../data/ouvriers.txt");
-		this.createBuildingCards("../data/batiments.txt");
-		this.createMachineCards("../data/machines.txt");
+		this.createWorkerCards("../data/cards/ouvriers.txt");
+		this.createBuildingCards("../data/cards/batiments.txt");
+		this.createMachineCards("../data/cards/machines.txt");
 
 		this.generateBoardWorker();
 		this.generateBoardBuilding();
@@ -206,5 +206,44 @@ public class Board {
 	 **/
 	public ArrayList<IBuilding> getFiveBuildingCards() {
 		return this.five_building_cards;
+	}
+
+	public void printBoard() {
+		int rightBorder = 34;
+		for(int i = 0; i < this.five_building_cards.get(0).toString().lines().count(); i++) {
+			if(i == 0) {
+				for(int j = 0; j < 5; j++) {
+					String count = centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+					System.out.print("\033[93m" + count + "\t\033[0m");
+				}
+				System.out.println();
+			}
+			for(IBuilding b : this.five_building_cards) {
+				String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+				System.out.print(line + "\t");
+			}
+			System.out.println();
+		}
+
+		System.out.println();
+
+		for(int i = 0; i < this.five_worker_cards.get(0).toString().lines().count(); i++) {
+			if(i == 0) {
+				for(int j = 0; j < 5; j++) {
+					String count = centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+					System.out.print("\033[93m" + count + "\t\033[0m");
+				}
+				System.out.println();
+			}
+			for(IWorker b : this.five_worker_cards) {
+				String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+				System.out.print(line + "\t");
+			}
+			System.out.println();
+		}
+	}
+
+	public static String centerString(int width, String s) {
+    	return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
 	}
 }
