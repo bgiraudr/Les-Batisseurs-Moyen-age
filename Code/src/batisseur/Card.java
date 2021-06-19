@@ -69,8 +69,4 @@ public abstract class Card {
 	}
 
 	public abstract String toString();
-
-	public static String centerString(int width, String s) {
-    	return String.format("│ %-" + width  + "s │\n", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
-	}
 }

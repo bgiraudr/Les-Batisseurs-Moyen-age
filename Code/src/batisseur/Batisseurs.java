@@ -93,6 +93,9 @@ public class Batisseurs {
 
 			String nom;
 			String[] noms = new String[4];
+			for(int i = 0; i < nbJoueur ; i++) {
+				noms[i] = "Auto " + (i+1-(nbJoueur-nbOrdi));
+			}
 			for(int i = 0; i < nbJoueur-nbOrdi; i++) {
 				System.out.println("Nom du joueur " + (i+1) + " ?");
 				System.out.print("> ");
@@ -102,10 +105,7 @@ public class Batisseurs {
 					nom = scan.next();
 				}
 				noms[i] = nom;
-				if(nbOrdi != 0) 
-					noms[i+nbOrdi] = "Auto " + (i+1);
 			}
-			
 			createGame(noms[0], noms[1], noms[2], noms[3], mode, this.gui);
 		} catch(InputMismatchException e) {
 			System.out.println("configPartie : Saisie invalide");

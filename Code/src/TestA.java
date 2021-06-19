@@ -16,11 +16,11 @@ public class TestA {
 		System.out.println(m1.checkConstruct());
 		b1.addWorkerOn(m1);
 		System.out.println(b1.checkConstruct());*/
-		Board b = new Board();
-		b.printBoard();
+		//Board b = new Board();
+		//b.printBoard();
 
-		HumanPlayer p = new HumanPlayer("Benjamin", b);
-		System.out.println(p);
+		//HumanPlayer p = new HumanPlayer("Benjamin", b);
+		//System.out.println(p);
 
 		/*for(IWorker c : b.getFiveWorkerCards()) {
 			System.out.println(c);

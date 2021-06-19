@@ -1,6 +1,8 @@
 package batisseur;
 
 import java.io.Serializable;
+import java.lang.Thread;
+import util.DesignString;
 
 public class Game implements IGame, Serializable {
 
@@ -24,7 +26,7 @@ public class Game implements IGame, Serializable {
 	 * @param mode the current mode
 	 */
 	public Game(String playerName1, String playerName2, String playerName3, String playerName4, Mode mode, UI gui) {
-		this.board = new Board();
+		this.board = new Board(this);
 		this.createPlayers(playerName1, playerName2, playerName3, playerName4, mode);
 		this.current = this.player1;
 		this.start();
@@ -108,17 +110,38 @@ public class Game implements IGame, Serializable {
 	 * change the current player
 	 **/
 	public void changeCurrent() {
-		if(this.current == this.player1 && this.player2 != null) {
-			this.current = this.player2;
+		if(this.nbPlayer == 2) {
+			if(this.current == this.player1) {
+				this.current = this.player2;
+			}
+			else if(this.current == this.player2) {
+				this.current = this.player1;
+			}
 		}
-		if(this.current == this.player2 && this.player3 != null) {
-			this.current = this.player3;
+		else if(this.nbPlayer == 3) {
+			if(this.current == this.player1) {
+				this.current = this.player2;
+			}
+			else if(this.current == this.player2) {
+				this.current = this.player3;
+			}
+			else if(this.current == this.player3) {
+				this.current = this.player1;
+			}
 		}
-		if(this.current == this.player3 && this.player4 != null) {
-			this.current = this.player4;
-		}
-		if(this.current == this.player4 && this.player1 != null) {
-			this.current = this.player1;
+		else if(this.nbPlayer == 4) {
+			if(this.current == this.player1) {
+				this.current = this.player2;
+			}
+			else if(this.current == this.player2) {
+				this.current = this.player3;
+			}
+			else if(this.current == this.player3) {
+				this.current = this.player4;
+			}
+			else if(this.current == this.player4) {
+				this.current = this.player1;
+			}
 		}
 	}
 
@@ -143,38 +166,45 @@ public class Game implements IGame, Serializable {
 	public void start() {
 		int tour = 0;
 		while(!checkWin()) {
-			for(int i = 0; i < this.nbPlayer; i++) {
-				System.out.println("C'est au bâtisseur " + this.current.getName() + " de jouer !\n");
-				this.current.play();
-				changeCurrent();
+			try {
+				for(int i = 0; i < this.nbPlayer; i++) {
+					DesignString.printBorder(50,"C'est au bâtisseur " + this.current.getName() + " de jouer !");
+					Thread.sleep(3000);
+					this.current.play();
+					DesignString.printBorder(30,"C'est la fin du tour !", "\033[0;92m");
+					Thread.sleep(3000);
+					changeCurrent();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			tour++;
-		} 
+		}
 		end();
 	}
 
 	private boolean checkWin() {
 		boolean ret = false;
 
-		int nbPointToWin = 17;
+		int nbPointToWin = 2;
 		if(this.nbPlayer == 2) {
-			if(this.player1.getPoint() == nbPointToWin ||
-				this.player2.getPoint() == nbPointToWin) {
+			if(this.player1.getPoint() >= nbPointToWin ||
+				this.player2.getPoint() >= nbPointToWin) {
 				ret = true;
 			}
 		}
 		if(this.nbPlayer == 3) {
-			if(this.player1.getPoint() == nbPointToWin ||
-				this.player2.getPoint() == nbPointToWin ||
-				this.player3.getPoint() == nbPointToWin) {
+			if(this.player1.getPoint() >= nbPointToWin ||
+				this.player2.getPoint() >= nbPointToWin ||
+				this.player3.getPoint() >= nbPointToWin) {
 				ret = true;
 			}
 		}
 		if(this.nbPlayer == 4) {
-			if(this.player1.getPoint() == nbPointToWin ||
-				this.player2.getPoint() == nbPointToWin ||
-				this.player3.getPoint() == nbPointToWin ||
-				this.player4.getPoint() == nbPointToWin) {
+			if(this.player1.getPoint() >= nbPointToWin ||
+				this.player2.getPoint() >= nbPointToWin ||
+				this.player3.getPoint() >= nbPointToWin ||
+				this.player4.getPoint() >= nbPointToWin) {
 				ret = true;
 			}
 		}
@@ -186,5 +216,10 @@ public class Game implements IGame, Serializable {
 	 **/
 	public void end() {
 
+	}
+
+	public Player[] getAllPlayers() {
+		Player[] p = {this.player1, this.player2, this.player3, this.player4};
+		return p;
 	}
 }

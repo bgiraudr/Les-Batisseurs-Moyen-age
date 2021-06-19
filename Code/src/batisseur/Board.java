@@ -3,6 +3,7 @@ package batisseur;
 import java.util.ArrayList;
 import java.util.Random;
 import util.RandomInt;
+import util.DesignString;
 
 import java.util.Scanner; 
 import java.io.FileReader;
@@ -17,10 +18,14 @@ public class Board {
 	public ArrayList<IWorker> five_worker_cards;
 	public ArrayList<IBuilding> five_building_cards;
 
+	private Game game;
+
 	private Random rand;
 
-	public Board() {
+	public Board(Game game) {
 		this.rand = new Random();
+
+		this.game = game;
 
 		this.worker_cards = new ArrayList<Card>();
 		this.building_cards = new ArrayList<Card>();
@@ -174,6 +179,22 @@ public class Board {
 		}
 	}
 
+	public ArrayList<Card> getApprentiCard() {
+		ArrayList<Card> ret = new ArrayList<Card>();
+		for(Card card : this.worker_cards) {
+			if(card.getName().equals("Apprenti")) {
+				ret.add(card);
+			}
+		}
+		return ret;
+	}
+
+	public Card generateInitApprenti() {
+		Card card = pickRandomCard(this.worker_cards);
+		this.worker_cards.remove(card);
+		return card;
+	}
+
 	/**
 	 * generate the five board buildings (include machine)
 	 **/
@@ -210,10 +231,13 @@ public class Board {
 
 	public void printBoard() {
 		int rightBorder = 34;
+
+		DesignString.printBorder(190,"CHANTIERS", "\033[0;91m");
+
 		for(int i = 0; i < this.five_building_cards.get(0).toString().lines().count(); i++) {
 			if(i == 0) {
 				for(int j = 0; j < 5; j++) {
-					String count = centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+					String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
 					System.out.print("\033[93m" + count + "\t\033[0m");
 				}
 				System.out.println();
@@ -226,11 +250,12 @@ public class Board {
 		}
 
 		System.out.println();
+		DesignString.printBorder(190,"OUVRIERS","\033[0;91m");
 
 		for(int i = 0; i < this.five_worker_cards.get(0).toString().lines().count(); i++) {
 			if(i == 0) {
 				for(int j = 0; j < 5; j++) {
-					String count = centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+					String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
 					System.out.print("\033[93m" + count + "\t\033[0m");
 				}
 				System.out.println();
@@ -243,7 +268,16 @@ public class Board {
 		}
 	}
 
-	public static String centerString(int width, String s) {
-    	return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
+	public void printPlayers() {
+		int rightBorder = 19;
+		for(int i = 0; i < this.game.getAllPlayers()[0].toString().lines().count(); i++) {
+			for(Player p : this.game.getAllPlayers()) {
+				if(p != null) {
+					String line = p.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+					System.out.print(line + "\t");
+				}
+			}
+			System.out.println();
+		}
 	}
 }

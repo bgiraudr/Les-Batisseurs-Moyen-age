@@ -11,4 +11,5 @@ public interface IBuilding {
 	public void setPoint(int point);
 	public int[] checkRessources();
 	public boolean isConstruct();
+	public String toStringValue();
 }

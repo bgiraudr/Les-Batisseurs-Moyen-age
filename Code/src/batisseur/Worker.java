@@ -1,5 +1,7 @@
 package batisseur;
 
+import util.DesignString;
+
 public class Worker extends Card implements IWorker {
 
 	private int cost;
@@ -44,14 +46,14 @@ public class Worker extends Card implements IWorker {
 		String botLine = "╰" + "─".repeat(rightBorder+2) + "╯\n";
 		String transiLine = "├" + "─".repeat(rightBorder+2) + "┤\n";
 
-		String top = centerString(rightBorder, this.getName());
+		String top = DesignString.centerString(rightBorder, this.getName(), "│");
 		String coinString = String.format("│ %-" + rightBorder + "s │\n", this.getCost() + " écus");
 		String stoneString = String.format("│ %-" + rightBorder + "s │\n", this.getStone() + " pierres");
 		String woodString = String.format("│ %-" + rightBorder + "s │\n", this.getWood() + " bois");
 		String knowledgeString = String.format("│ %-" + rightBorder + "s │\n", this.getKnowledge() + " savoir");
 		String tileString = String.format("│ %-" + rightBorder + "s │\n", this.getTile() + " tuiles");
 
-		String ret = topLine + top + transiLine + coinString + transiLine + stoneString + woodString + knowledgeString + tileString + botLine;
+		String ret = topLine + top + "\n" + transiLine + coinString + transiLine + stoneString + woodString + knowledgeString + tileString + botLine;
 
 		return ret;
 	}

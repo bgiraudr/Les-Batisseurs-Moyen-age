@@ -1,6 +1,9 @@
 ╭───────────────────────────────────────────────────────────────╮
 │								│
 │  Bienvenue jeune bâtisseur !					│
+│  Veuillez mettre cette fenêtre en plein écran pour une	│
+│  meilleure expérience de jeu.					│
+│								│
 │  Veuillez renseigner un chiffre en fonction de votre souhait	│
 │								│
 │  1 - Lancer une partie					│

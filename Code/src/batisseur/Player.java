@@ -1,6 +1,7 @@
 package batisseur;
 
 import java.util.ArrayList;
+import util.DesignString;
 
 public abstract class Player {
 
@@ -34,6 +35,8 @@ public abstract class Player {
 			this.building_cards = new ArrayList<IBuilding>();
 			this.started_buildings = new ArrayList<IBuilding>();
 			this.building_turn = new ArrayList<IBuilding>();
+
+			this.worker_cards.add((IWorker)(this.board.generateInitApprenti()));
 		}
 	}
 
@@ -149,18 +152,14 @@ public abstract class Player {
 	 */
 	public void workerToBuilding(IWorker worker, IBuilding building) {
 		if(worker != null && building != null) {
-			int remove = 0;
-			this.building_turn.add(building);
-			for(int i = 0; i < this.building_turn.size(); i++) {
-				if(this.building_turn.get(i) == building) {
-					remove++;
-				}
-			}
+			int remove = getRemoveBuilding(building);
 
-			if(this.action - remove >= 0) {
+			if(this.action - remove >= 0 && this.coin >= worker.getCost()) {
+				this.building_turn.add(building);
 				if(this.worker_cards.contains(worker) && this.building_cards.contains(building)) {
 					building.addWorkerOn(worker);
 					this.worker_cards.remove(worker);
+					this.coin -= worker.getCost();
 					
 					removeAction(remove);
 
@@ -172,10 +171,19 @@ public abstract class Player {
 					System.err.println("workerToBuilding : you don't own this worker or building");
 				}
 			} else {
-				System.err.println("workerToBuilding : you don't have enough action left. You have " + this.action + ", you need " + remove);
+				System.err.println("workerToBuilding : you don't have enough action left. You have " + this.action + ", you need " + remove + " or you don't have enough coin");
 			}
 		}
-		
+	}
+
+	public int getRemoveBuilding(IBuilding building) {
+		int remove = 0;
+		for(int i = 0; i < this.building_turn.size(); i++) {
+			if(this.building_turn.get(i) == building) {
+				remove++;
+			}
+		}
+		return remove+1;
 	}
 
 	/**
@@ -187,10 +195,18 @@ public abstract class Player {
 			this.coin += building.getCoin();
 			this.point += building.getPoint();
 			this.started_buildings.remove(building);
+			this.building_cards.remove(building);
 			for(IWorker workerOn : building.getWorkerOn()) {
 				this.worker_cards.add(workerOn);
 			}
-			System.out.println(((Card)building).getName() + " is finished ! Well done");
+			if(building instanceof Machine) {
+				this.worker_cards.add((IWorker)building);
+			}
+			//System.out.println(((Card)building).getName() + " is finished ! Well done");
+			DesignString.printBorder(80,((Card)building).getName() + " est terminé !", "\033[1;92m");
+			DesignString.printBorder(40,"Vous gagnez " + building.getPoint() + " points", "\033[1;92m");
+			DesignString.printBorder(40,"Vous gagnez " + building.getCoin() + " écus", "\033[1;92m");
+			DesignString.printBorder(40,"Vos ouvriers sont de retour !");
 		}
 	}
 
@@ -309,8 +325,90 @@ public abstract class Player {
 	//play
 	public abstract void play();
 
-	public String centerString(int width, String s) {
-    	return String.format("│ %-" + width  + "s │\n", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
+	public void initializeTurn() {
+		this.building_turn.clear();
+		this.action = 3;
+	}
+
+	public void printWorkers(int begin) {
+		int rightBorder = 34;
+
+		DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
+
+		for(int i = 0; i < this.worker_cards.get(0).toString().lines().count(); i++) {
+			if(i == 0) {
+				for(int j = begin; (j < begin+5 && j < this.worker_cards.size()); j++) {
+					String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+					System.out.print("\033[93m" + count + "\t\033[0m");
+				}
+				System.out.println();
+			}
+			int x = begin;
+			while(x < this.worker_cards.size() && x < begin+5) {
+				IWorker b = this.worker_cards.get(x);
+				String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+				System.out.print(line + "\t");
+				x++;
+			}
+			System.out.println();
+		}
+		DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
+	}
+
+	public void printBuildings(int begin) {
+		int rightBorder = 34;
+
+		if(this.building_cards.size() > 0) {
+			DesignString.printBorder(190,"VOS CHANTIERS", "\033[0;91m");
+			for(int i = 0; i < this.building_cards.get(0).toString().lines().count(); i++) {
+				if(i == 0) {
+					for(int j = begin; (j < begin+5 && j < this.building_cards.size()); j++) {
+						String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+						System.out.print("\033[93m" + count + "\t\033[0m");
+					}
+					System.out.println();
+				}
+				int x = begin;
+				while(x < this.building_cards.size() && x < begin+5) {
+					IBuilding b = this.building_cards.get(x);
+					String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+					System.out.print(line + "\t");
+					x++;
+				}
+				System.out.println();
+			}
+			DesignString.printBorder(190,"VOS CHANTIERS", "\033[0;91m");
+		} else {
+			DesignString.printBorder(50, "Aucun chantier !", "\033[1;91m");
+		}
+	}
+
+	public void printStartedBuilding(int begin) {
+		int rightBorder = 34;
+
+		if(this.started_buildings.size() > 0) {
+			DesignString.printBorder(190,"VOS CHANTIERS EN COURS", "\033[0;91m");
+			for(int i = 0; i < this.started_buildings.get(0).toStringValue().lines().count(); i++) {
+				if(i == 0) {
+					for(int j = begin; (j < begin+5 && j < this.started_buildings.size()); j++) {
+						String count = DesignString.centerString(rightBorder, String.format("~ " + (this.building_cards.indexOf(this.started_buildings.get(j))+1) + " ~"));
+						System.out.print("\033[93m" + count + "\t\033[0m");
+					}
+					System.out.println();
+				}
+				int x = begin;
+				while(x < this.started_buildings.size() && x < begin+5) {
+					IBuilding b = this.started_buildings.get(x);
+					String line = b.toStringValue().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+					System.out.print(line + "\t");
+					x++;
+				}
+				System.out.println();
+			}
+			DesignString.printBorder(190,"VOS CHANTIERS EN COURS", "\033[0;91m");
+		} else {
+			DesignString.printBorder(50, "Aucun chantier !", "\033[1;91m");
+		}
 	}
 
 	public String toString() {
@@ -319,12 +417,12 @@ public abstract class Player {
 		String botLine = "╰" + "─".repeat(rightBorder+2) + "╯\n";
 		String transiLine = "├" + "─".repeat(rightBorder+2) + "┤\n";
 
-		String top = centerString(rightBorder, "Ϧ " + this.getName());
+		String top = DesignString.centerString(rightBorder, "Ϧ " + this.getName(), "│");
 		String coinString = String.format("│ %-" + rightBorder + "s │\n", this.coin + " écus");
 		String pointString = String.format("│ %-" + rightBorder + "s │\n", this.point + " points");
 		String actionString = String.format("│ %-" + rightBorder + "s │\n", this.action + " actions");
 		String nbOuvrier = String.format("│ %-" + rightBorder + "s │\n", this.worker_cards.size() + " ouvriers");
 		String nbBatiment = String.format("│ %-" + rightBorder + "s │\n", this.building_cards.size() + " bâtiments");
-		return topLine + top + transiLine + coinString + pointString + actionString + transiLine + nbOuvrier + nbBatiment + botLine;
+		return topLine + top + "\n" + transiLine + coinString + pointString + actionString + transiLine + nbOuvrier + nbBatiment + botLine;
 	}
 }
