@@ -7,7 +7,7 @@ import java.lang.Thread;
 
 public class HumanPlayer extends Player {
 
-	private Scanner scan;
+	private transient Scanner scan;
 
 	/**
 	 * Create a new Human player
@@ -23,12 +23,18 @@ public class HumanPlayer extends Player {
 	 * play
 	 **/
 	public void play() {
+
+		//when a file is loaded, you must recreate the transient scanner
+		if(this.scan == null) {
+			this.scan = new Scanner(System.in);
+		}
+
 		this.initializeTurn();
 
 		this.getBoard().printBoard();
 		System.out.println();
-
-		while(this.getAction() > 0) {
+		boolean continuer = true;
+		while(this.getAction() > 0 && continuer) {
 			DesignString.printBorder(25,"ACTIONS : " + this.getAction(), "\033[0;93m");
 			DesignString.printBorder(25,"ÉCUS : " + this.getCoin(), "\033[0;93m");
 			System.out.println("╭───────────────────────────────────────────────╮");
@@ -43,6 +49,7 @@ public class HumanPlayer extends Player {
 			System.out.println("│ 7 - Échanger des écus contre des actions      │");
 			System.out.println("│ 8 - Échanger des actions contre des écus      │");
 			System.out.println("│ 9 - Afficher les profils                      │");
+			System.out.println("│ 10 - Quitter et sauvegarder                   │");
 			System.out.println("╰───────────────────────────────────────────────╯");
 			System.out.println();
 			System.out.print("> ");
@@ -302,6 +309,11 @@ public class HumanPlayer extends Player {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+
+			if(input.equals("10")) {
+				this.getBoard().getGame().saveGame();
+				continuer = false;
 			}
 		}
 	}

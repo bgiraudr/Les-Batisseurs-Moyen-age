@@ -3,6 +3,9 @@ package batisseur;
 import java.io.Serializable;
 import java.lang.Thread;
 import util.DesignString;
+import java.util.ArrayList;
+import util.RWGame;
+import java.util.Scanner;
 
 public class Game implements IGame, Serializable {
 
@@ -15,6 +18,8 @@ public class Game implements IGame, Serializable {
 	private Player current;
 	private Board board;
 	private Mode mode;
+
+	private int tour;
 
 	/**
 	 * create the main game with all the player
@@ -29,6 +34,7 @@ public class Game implements IGame, Serializable {
 		this.board = new Board(this);
 		this.createPlayers(playerName1, playerName2, playerName3, playerName4, mode);
 		this.current = this.player1;
+		this.tour = 1;
 		this.start();
 	}
 
@@ -149,7 +155,11 @@ public class Game implements IGame, Serializable {
 	 * save the game
 	 **/
 	public void saveGame() {
-		// TODO - implement Game.saveGame
+		DesignString.printBorder(35,"Entre le nom de ta sauvegarde", "\033[0;92m");
+		System.out.print("> ");
+		Scanner scan = new Scanner(System.in);
+		RWGame.writeGame("../data/saves/" + scan.next() + ".sav", this);
+		System.exit(0);
 	}
 
 	/**
@@ -160,25 +170,44 @@ public class Game implements IGame, Serializable {
 		return this.current;
 	}
 
+	public void setCurrent(Player p) {
+		this.current = p;
+	}
+
+	public int getTour() {
+		return this.tour;
+	}
+
+	public void setTour(int tour) {
+		this.tour = tour;
+	}
+
 	/**
 	 * contains the main loop
 	 **/
 	public void start() {
-		int tour = 0;
-		while(!checkWin()) {
+		this.tour = getTour();
+		boolean buffer = false;
+		while(!checkWin() && !this.board.checkEmpty()) {
+			DesignString.printBorder(30,"C'est le tour numéro " + this.tour, "\033[0;92m");
 			try {
 				for(int i = 0; i < this.nbPlayer; i++) {
-					DesignString.printBorder(50,"C'est au bâtisseur " + this.current.getName() + " de jouer !");
+					DesignString.printBorder(50,"C'est au bâtisseur " + this.current.getName() + " de jouer !", "\033[93m");
 					Thread.sleep(3000);
 					this.current.play();
-					DesignString.printBorder(30,"C'est la fin du tour !", "\033[0;92m");
-					Thread.sleep(3000);
+					DesignString.printBorder(40,"C'est la fin du tour du joueur !", "\033[0;92m");
+					if(this.current.getPoint() >= 17 && !buffer) {
+						DesignString.printBorder(40,this.current.getName() + " a terminé ! Dernier tour !", "\033[0;92m");
+						buffer = true;
+					}
+					this.board.printPlayers();
+					Thread.sleep(2000);
 					changeCurrent();
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			tour++;
+			this.tour++;
 		}
 		end();
 	}
@@ -186,7 +215,7 @@ public class Game implements IGame, Serializable {
 	private boolean checkWin() {
 		boolean ret = false;
 
-		int nbPointToWin = 2;
+		int nbPointToWin = 17;
 		if(this.nbPlayer == 2) {
 			if(this.player1.getPoint() >= nbPointToWin ||
 				this.player2.getPoint() >= nbPointToWin) {
@@ -212,9 +241,67 @@ public class Game implements IGame, Serializable {
 	}
 
 	/**
-	 * when a player reached 13 points
+	 * when a player reached 17 points
 	 **/
 	public void end() {
+		Player[] players = getAllPlayers();
+
+		ArrayList<Player> ordreWinner = new ArrayList<Player>();
+		ArrayList<Integer> calcul = new ArrayList<Integer>();
+		ArrayList<Integer> calcultri = new ArrayList<Integer>();
+
+		for(int i = 0; i < this.nbPlayer; i++) {
+			calcul.add(players[i].getPoint() + (int)(players[i].getCoin()/10));
+		}
+		
+		//point+coin sort
+		int max = 0;
+		int imax = 0;
+		for(int j = 0; j < this.nbPlayer; j++) {
+			max = 0;
+			imax = 0;
+			for(int i = 0; i < this.nbPlayer; i++) {
+				if(calcul.get(i) >= max && !ordreWinner.contains(players[i])) {
+					max = calcul.get(i);
+					imax = i;
+				}
+			}
+			ordreWinner.add(players[imax]);
+			calcultri.add(max);
+		}
+		
+		//point sort
+		for(int i = 0; i < this.nbPlayer-1; i++) {
+			if(calcultri.get(i) == calcultri.get(i+1)) {
+				if(ordreWinner.get(i).getPoint() < ordreWinner.get(i+1).getPoint()) {
+					Player temp = ordreWinner.get(i+1);
+					ordreWinner.set(i+1, ordreWinner.get(i));
+					ordreWinner.set(i, temp);
+				}
+			}
+		}
+
+		for(int i = 0; i < this.nbPlayer-1; i++) {
+			if(ordreWinner.get(i).getPoint() == ordreWinner.get(i+1).getPoint()) {
+				if(ordreWinner.get(i).getCoin() < ordreWinner.get(i+1).getCoin()) {
+					Player temp = ordreWinner.get(i+1);
+					ordreWinner.set(i+1, ordreWinner.get(i));
+					ordreWinner.set(i, temp);
+				}
+			}
+		}
+
+		if(this.board.checkEmpty()) {
+			DesignString.printBorder("Plus de cartes disponibles ! Fin de partie prématurée !");
+		}
+
+		DesignString.printBorder(35,"C'est l'heure des résultats !", "\033[0;92m");
+		for(int i = 0; i < this.nbPlayer; i++) {
+			System.out.println("À la place " + (i+1));
+			System.out.println(ordreWinner.get(i));
+		}
+
+		DesignString.printBorder(30,"Bravo à tous !", "\033[0;92m");
 
 	}
 

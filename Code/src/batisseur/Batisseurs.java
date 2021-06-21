@@ -3,6 +3,10 @@ package batisseur;
 import java.util.Scanner;
 import util.ReadFile;
 import java.util.InputMismatchException;
+import util.RWGame;
+import java.io.File;
+import util.DesignString;
+import java.io.IOException;
 
 public class Batisseurs {
 
@@ -13,6 +17,7 @@ public class Batisseurs {
 	private static final String PATH_TITLE = "../data/files/titreBat.txt";
 	private static final String PATH_MAIN_MENU = "../data/files/mainMenu.txt";
 	private static final String PATH_RULES = "../data/files/rules.txt";
+	private static final String SAVE_FOLDER = "../data/saves/";
 
 	/**
 	 * create and launch the game
@@ -48,6 +53,7 @@ public class Batisseurs {
 					configPartie();
 					break;
 				case 2:
+					lunchPartie();
 					break;
 				case 3:
 					ReadFile.printFile(PATH_RULES);
@@ -114,6 +120,33 @@ public class Batisseurs {
 
 	private void createGame(String playerName1, String playerName2, String playerName3, String playerName4, Mode mode, UI gui) {
 		this.gameplay = new Game(playerName1, playerName2, playerName3, playerName4, mode, gui);
+	}
+
+	private void lunchPartie() {
+		try {
+			File saveFolder = new File(SAVE_FOLDER);
+			String content[] = saveFolder.list();
+
+			Scanner scan = new Scanner(System.in);
+
+			System.out.println("╭───────────────────────────────────────────────╮");
+			System.out.println("│             Liste des sauvegardes             │");
+			System.out.println("├───────────────────────────────────────────────┤");
+			for(String save : content) {
+				String msg = String.format("│ %-" + 45  + "s │", save.substring(0,save.length()-4));
+				System.out.println(msg);
+			}
+			System.out.println("╰───────────────────────────────────────────────╯");
+
+			DesignString.printBorder(35,"Entre le nom de ta sauvegarde", "\033[0;92m");
+			System.out.print("> ");
+			String saveFile = scan.next();
+			Game game = RWGame.readGame("../data/saves/" + saveFile + ".sav");
+			this.gameplay = game;
+			game.start();
+		} catch(IOException e) {
+			DesignString.printBorder(50,"ERREUR SAUVEGARDE", "\033[0;91m");
+		}
 	}
 
 	/**

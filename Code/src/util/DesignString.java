@@ -27,4 +27,12 @@ public class DesignString {
 		String msg = String.format("│ %-" + width  + "s │\n", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
     	System.out.println(topLine + msg + botLine);
 	}
+
+	public static void printBorder(String s) {
+		int width = s.length()+5;
+		String topLine = "╭" + "─".repeat(width+2) + "╮\n";
+		String botLine = "╰" + "─".repeat(width+2) + "╯\n";
+		String msg = String.format("│ %-" + width  + "s │\n", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
+    	System.out.println(topLine + msg + botLine);
+	}
 }

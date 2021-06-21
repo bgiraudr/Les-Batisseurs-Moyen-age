@@ -2,8 +2,9 @@ package batisseur;
 
 import java.util.ArrayList;
 import util.DesignString;
+import java.io.Serializable;
 
-public abstract class Player {
+public abstract class Player implements Serializable {
 
 	private String name;
 	private int point;

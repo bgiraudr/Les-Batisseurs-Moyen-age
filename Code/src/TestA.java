@@ -1,4 +1,6 @@
 import batisseur.*;
+import util.RandomInt;
+import java.util.Random;
 
 public class TestA {
 	public static void main(String[] args) {
@@ -95,5 +97,10 @@ public class TestA {
 		p.workerToBuilding(w2,b2);
 		System.out.println(p);
 		//p.play();*/
+
+
+		Game game = new Game("a","b","c","d",Mode.HHA,UI.TUI);
+		game.saveGame();
+		//RandomInt.randomInt(1,0, new Random());
 	}
 }

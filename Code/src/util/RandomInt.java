@@ -12,6 +12,12 @@ public class RandomInt {
 	* @return the pseudo-random number
 	**/
 	public static int randomInt(int min, int max, Random rand) {
-		return rand.nextInt(max - min + 1) + min;
+		int ret;
+		try {
+			ret = rand.nextInt(max - min + 1) + min;
+		} catch(IllegalArgumentException e) {
+			ret = 0;
+		}
+		return ret;
 	}
 }

@@ -1,6 +1,8 @@
 package batisseur;
 
-public enum UI {
+import java.io.Serializable;
+
+public enum UI implements Serializable {
 	GUI,
 	TUI
 }

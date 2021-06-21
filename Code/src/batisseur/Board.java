@@ -9,7 +9,9 @@ import java.util.Scanner;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
 
 	private ArrayList<Card> worker_cards;
 	private ArrayList<Card> building_cards;
@@ -39,6 +41,10 @@ public class Board {
 
 		this.generateBoardWorker();
 		this.generateBoardBuilding();
+	}
+
+	public Game getGame() {
+		return this.game;
 	}
 
 	/**
@@ -159,11 +165,13 @@ public class Board {
 	 **/
 	public Card pickRandomCard(ArrayList<Card> array) {
 		Card randCard = null;
-		if(array != null) {
-			int i = RandomInt.randomInt(0, array.size()-1, this.rand);
-			randCard = array.get(i);
-		} else {
-			System.err.println("pickRandomCard : array null");
+		if(!checkEmpty()) {
+			if(array != null) {
+				int i = RandomInt.randomInt(0, array.size()-1, this.rand);
+				randCard = array.get(i);
+			} else {
+				System.err.println("pickRandomCard : array null");
+			}
 		}
 		return randCard;
 	}
@@ -229,6 +237,14 @@ public class Board {
 		return this.five_building_cards;
 	}
 
+	public boolean checkEmpty() {
+		boolean ret = false;
+		if(this.getWorkerCards().size() == 0 || this.getBuildingCards().size() == 0) {
+			ret = true;
+		}
+		return ret;
+	}
+
 	public void printBoard() {
 		int rightBorder = 34;
 
@@ -237,14 +253,18 @@ public class Board {
 		for(int i = 0; i < this.five_building_cards.get(0).toString().lines().count(); i++) {
 			if(i == 0) {
 				for(int j = 0; j < 5; j++) {
-					String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
-					System.out.print("\033[93m" + count + "\t\033[0m");
+					if(this.five_building_cards.get(j) != null) {
+						String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+						System.out.print("\033[93m" + count + "\t\033[0m");
+					}
 				}
 				System.out.println();
 			}
 			for(IBuilding b : this.five_building_cards) {
-				String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
-				System.out.print(line + "\t");
+				if(b != null) {
+					String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+					System.out.print(line + "\t");
+				}
 			}
 			System.out.println();
 		}
@@ -255,14 +275,18 @@ public class Board {
 		for(int i = 0; i < this.five_worker_cards.get(0).toString().lines().count(); i++) {
 			if(i == 0) {
 				for(int j = 0; j < 5; j++) {
-					String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
-					System.out.print("\033[93m" + count + "\t\033[0m");
+					if(this.five_worker_cards.get(j) != null) {
+						String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+						System.out.print("\033[93m" + count + "\t\033[0m");
+					}
 				}
 				System.out.println();
 			}
 			for(IWorker b : this.five_worker_cards) {
-				String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
-				System.out.print(line + "\t");
+				if(b != null) {
+					String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+					System.out.print(line + "\t");
+				}
 			}
 			System.out.println();
 		}
