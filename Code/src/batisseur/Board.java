@@ -21,7 +21,6 @@ public class Board implements Serializable {
 	public ArrayList<IBuilding> five_building_cards;
 
 	private Game game;
-
 	private Random rand;
 
 	public Board(Game game) {
@@ -43,6 +42,10 @@ public class Board implements Serializable {
 		this.generateBoardBuilding();
 	}
 
+	/**
+	 * get the game
+	 * @return the game
+	 **/
 	public Game getGame() {
 		return this.game;
 	}
@@ -237,6 +240,10 @@ public class Board implements Serializable {
 		return this.five_building_cards;
 	}
 
+	/**
+	 * check if there is some card left in the arraylist
+	 * @return true if an arraylist is empty
+	 **/
 	public boolean checkEmpty() {
 		boolean ret = false;
 		if(this.getWorkerCards().size() == 0 || this.getBuildingCards().size() == 0) {
@@ -245,6 +252,9 @@ public class Board implements Serializable {
 		return ret;
 	}
 
+	/**
+	 * print the board
+	 **/
 	public void printBoard() {
 		int rightBorder = 34;
 
@@ -292,6 +302,9 @@ public class Board implements Serializable {
 		}
 	}
 
+	/**
+	 * print all of the players
+	 **/
 	public void printPlayers() {
 		int rightBorder = 19;
 		for(int i = 0; i < this.game.getAllPlayers()[0].toString().lines().count(); i++) {

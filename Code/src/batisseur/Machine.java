@@ -207,6 +207,10 @@ public class Machine extends Card implements IWorker, IBuilding {
 		return ret;
 	}
 
+	/**
+	 * Create the string when the building is under construction
+	 * @return the string
+	 **/
 	public String toStringValue() {
 		int rightBorder = 30;
 		String topLine = "╭" + "─".repeat(rightBorder+2) + "╮\n";
@@ -227,6 +231,10 @@ public class Machine extends Card implements IWorker, IBuilding {
 		return ret;
 	}
 
+	/**
+	 * Create the string for the building
+	 * @return the string
+	 **/
 	public String toString() {
 		int rightBorder = 30;
 		String topLine = "╭" + "─".repeat(rightBorder+2) + "╮\n";

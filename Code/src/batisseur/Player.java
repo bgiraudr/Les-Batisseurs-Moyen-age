@@ -49,6 +49,11 @@ public abstract class Player implements Serializable {
 		return this.name;
 	}
 
+	public void initializeTurn() {
+		this.building_turn.clear();
+		this.action = 3;
+	}
+
 	/**
 	 * add a building to your cards from the top 5
 	 * @param building the building to add
@@ -142,6 +147,10 @@ public abstract class Player implements Serializable {
 		return this.building_turn;
 	}
 
+	/**
+	 * get the board
+	 * @return the board
+	 **/
 	public Board getBoard() {
 		return this.board;
 	}
@@ -177,6 +186,11 @@ public abstract class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * calculate the value to remove if a worker is send to a building
+	 * @param building the building
+	 * @return the value to remove if a worker is send to this building
+	 **/
 	public int getRemoveBuilding(IBuilding building) {
 		int remove = 0;
 		for(int i = 0; i < this.building_turn.size(); i++) {
@@ -323,14 +337,12 @@ public abstract class Player implements Serializable {
 		}
 	}
 
-	//play
 	public abstract void play();
 
-	public void initializeTurn() {
-		this.building_turn.clear();
-		this.action = 3;
-	}
-
+	/**
+	 * print the workers the player have
+	 * @param begin the begin where you want to start the print. 
+	 **/
 	public void printWorkers(int begin) {
 		int rightBorder = 34;
 
@@ -356,6 +368,10 @@ public abstract class Player implements Serializable {
 		DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
 	}
 
+	/**
+	 * print the buildings the player have
+	 * @param begin the begin where you want to start the print. 
+	 **/
 	public void printBuildings(int begin) {
 		int rightBorder = 34;
 
@@ -384,6 +400,10 @@ public abstract class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * print the started building the player have
+	 * @param begin the begin where you want to start the print. 
+	 **/
 	public void printStartedBuilding(int begin) {
 		int rightBorder = 34;
 
@@ -412,6 +432,10 @@ public abstract class Player implements Serializable {
 		}
 	}
 
+	/**
+	 * string player
+	 * @return the string
+	 **/
 	public String toString() {
 		int rightBorder = 15;
 		String topLine = "╭" + "─".repeat(rightBorder+2) + "╮\n";

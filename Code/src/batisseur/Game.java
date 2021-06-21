@@ -170,14 +170,26 @@ public class Game implements IGame, Serializable {
 		return this.current;
 	}
 
+	/**
+	 * set the current player
+	 * @param p the player
+	 **/
 	public void setCurrent(Player p) {
 		this.current = p;
 	}
 
+	/**
+	 * get the current tour
+	 * @return the tour
+	 **/
 	public int getTour() {
 		return this.tour;
 	}
 
+	/**
+	 * set the tour value
+	 * @param tour the new tour
+	 **/
 	public void setTour(int tour) {
 		this.tour = tour;
 	}
@@ -212,6 +224,10 @@ public class Game implements IGame, Serializable {
 		end();
 	}
 
+	/**
+	 * check if someone has over 17 points
+	 * @return true if someone has won
+	 **/
 	private boolean checkWin() {
 		boolean ret = false;
 
@@ -305,6 +321,10 @@ public class Game implements IGame, Serializable {
 
 	}
 
+	/**
+	 * get all the player in a list
+	 * @return a list of all the players
+	 **/
 	public Player[] getAllPlayers() {
 		Player[] p = {this.player1, this.player2, this.player3, this.player4};
 		return p;

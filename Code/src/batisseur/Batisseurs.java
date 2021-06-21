@@ -30,13 +30,22 @@ public class Batisseurs {
 		this.menuAccueil();
 	}
 
-	/*
-	* read the configuration file
-	*/
-	public void configure() {
-		
+	/**
+	 * create the main game with all the player
+	 * @param playerName1 the first player name
+	 * @param playerName2 the second player name 
+	 * @param playerName3 the third player name 
+	 * @param playerName4 the fourth player name 
+	 * @param gui true if you want to play with the interface on
+	 * @param mode the current mode
+	 */
+	private void createGame(String playerName1, String playerName2, String playerName3, String playerName4, Mode mode, UI gui) {
+		this.gameplay = new Game(playerName1, playerName2, playerName3, playerName4, mode, gui);
 	}
 
+	/**
+	 * create the main menu
+	 **/
 	private void menuAccueil() {
 		ReadFile.printFile(PATH_TITLE);
 		System.out.println();
@@ -53,7 +62,7 @@ public class Batisseurs {
 					configPartie();
 					break;
 				case 2:
-					lunchPartie();
+					launchPartie();
 					break;
 				case 3:
 					ReadFile.printFile(PATH_RULES);
@@ -73,6 +82,9 @@ public class Batisseurs {
 		}
 	}
 
+	/**
+	 * config a game
+	 **/
 	private void configPartie() {
 		try {
 			Scanner scan = new Scanner(System.in);
@@ -118,11 +130,10 @@ public class Batisseurs {
 		}
 	}
 
-	private void createGame(String playerName1, String playerName2, String playerName3, String playerName4, Mode mode, UI gui) {
-		this.gameplay = new Game(playerName1, playerName2, playerName3, playerName4, mode, gui);
-	}
-
-	private void lunchPartie() {
+	/**
+	 * launch a game from a savefile
+	 **/
+	private void launchPartie() {
 		try {
 			File saveFolder = new File(SAVE_FOLDER);
 			String content[] = saveFolder.list();
