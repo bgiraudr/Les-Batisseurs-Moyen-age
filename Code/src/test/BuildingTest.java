@@ -41,8 +41,14 @@ public class BuildingTest {
     @Test()
     public void addWorkerOn() {
         Worker w2 = new Worker("Test",0,1,2,3,4);
+        Machine m1 = new Machine("Test",0,1,1,1,1,1,1,1,1);
         b.addWorkerOn(w2);
+        b.addWorkerOn(m1);
         assertTrue(b.getWorkerOn().contains(w2));
+        assertFalse(b.getWorkerOn().contains(m1)); //the machine is not a worker
+        m1.addWorkerOn(new Worker("Test",0,2,2,3,4));
+        b.addWorkerOn(m1);
+        assertTrue(b.getWorkerOn().contains(m1));
     }
 
     @Test()

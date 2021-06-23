@@ -11,9 +11,8 @@ public class AutoPlayer extends Player {
 
 	/**
 	 * Create an autoplayer using the name and the difficulty you want
-	 * @param name
-	 * @param board
-	 * @param difficulty
+	 * @param name the name of the player
+	 * @param board the current board
 	 */
 	public AutoPlayer(String name, Board board) {
 		super(name, board);

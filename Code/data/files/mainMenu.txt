@@ -9,8 +9,7 @@
 │  1 - Lancer une partie					│
 │  2 - Charger une partie					│
 │  3 - Lire les règles						│
-│  4 - Paramètres						│
-│  5 - Basculer sur l'interface graphique			│
-│  6 - Quitter							│
+│  4 - Basculer sur l'interface graphique			│
+│  5 - Quitter							│
 │								│
 ╰───────────────────────────────────────────────────────────────╯

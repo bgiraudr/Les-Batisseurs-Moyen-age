@@ -6,6 +6,10 @@ import util.DesignString;
 import java.util.ArrayList;
 import util.RWGame;
 import java.util.Scanner;
+import util.RandomInt;
+import java.util.Random;
+
+import view.ingame.*;
 
 public class Game implements IGame, Serializable {
 
@@ -33,9 +37,11 @@ public class Game implements IGame, Serializable {
 	public Game(String playerName1, String playerName2, String playerName3, String playerName4, Mode mode, UI gui) {
 		this.board = new Board(this);
 		this.createPlayers(playerName1, playerName2, playerName3, playerName4, mode);
-		this.current = this.player1;
+		this.setRandomCurrent();
 		this.tour = 1;
-		this.start();
+		if(gui == UI.GUI) {
+			GameFrame view = new GameFrame(this);
+		}
 	}
 
 	/**
@@ -112,6 +118,24 @@ public class Game implements IGame, Serializable {
 		}
 	}
 
+	public void setRandomCurrent() {
+		int choix = RandomInt.randomInt(1,this.nbPlayer, new Random());
+		switch(choix) {
+			case 1:
+				this.current = this.player1;
+				break;
+			case 2:
+				this.current = this.player2;
+				break;
+			case 3:
+				this.current = this.player3;
+				break;
+			case 4:
+				this.current = this.player4;
+				break;
+		}
+	}
+
 	/**
 	 * change the current player
 	 **/
@@ -158,7 +182,7 @@ public class Game implements IGame, Serializable {
 		DesignString.printBorder(35,"Entre le nom de ta sauvegarde", "\033[0;92m");
 		System.out.print("> ");
 		Scanner scan = new Scanner(System.in);
-		RWGame.writeGame("../data/saves/" + scan.next() + ".sav", this);
+		RWGame.writeGame("./data/saves/" + scan.next() + ".sav", this);
 		System.exit(0);
 	}
 
@@ -207,6 +231,7 @@ public class Game implements IGame, Serializable {
 					DesignString.printBorder(50,"C'est au bâtisseur " + this.current.getName() + " de jouer !", "\033[93m");
 					Thread.sleep(3000);
 					this.current.play();
+					this.current.setAction(3);
 					DesignString.printBorder(40,"C'est la fin du tour du joueur !", "\033[0;92m");
 					if(this.current.getPoint() >= 17 && !buffer) {
 						DesignString.printBorder(40,this.current.getName() + " a terminé ! Dernier tour !", "\033[0;92m");
@@ -228,7 +253,7 @@ public class Game implements IGame, Serializable {
 	 * check if someone has over 17 points
 	 * @return true if someone has won
 	 **/
-	private boolean checkWin() {
+	public boolean checkWin() {
 		boolean ret = false;
 
 		int nbPointToWin = 17;
@@ -328,5 +353,21 @@ public class Game implements IGame, Serializable {
 	public Player[] getAllPlayers() {
 		Player[] p = {this.player1, this.player2, this.player3, this.player4};
 		return p;
+	}
+
+	/**
+	 * get the board
+	 * @return the board
+	 **/
+	public Board getBoard() {
+		return this.board;
+	}
+
+	/**
+	 * get the nb player
+	 * @return the nb player
+	 **/
+	public int getNbPlayer() {
+		return this.nbPlayer;
 	}
 }

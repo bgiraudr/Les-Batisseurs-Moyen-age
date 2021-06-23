@@ -4,21 +4,23 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import batisseur.*;
 
-
 import java.util.ArrayList;
 
 public class AutoPlayerTest {
 
     AutoPlayer p;
+    Game g;
 
     @Before()
     public void setUp() {
-        p = new AutoPlayer("name",new Board(),Difficulty.EASY);
+        g = new Game("a","b","c","d",Mode.HA,UI.TUI);
+        p = new AutoPlayer("name",new Board(g));
     }
 
     @After()
     public void tearDown() {
         p = null;
+        g = null;
     }
 
     @Test()
@@ -50,6 +52,7 @@ public class AutoPlayerTest {
 
     @Test()
     public void getCoin() {
+        p.setCoin(0);
         assertTrue(p.getCoin() == 0);
         p.addCoin(3);
         assertTrue(p.getCoin() == 3);
@@ -69,6 +72,7 @@ public class AutoPlayerTest {
 
     @Test()
     public void buyAction() {
+        p.setCoin(0);
         p.setAction(0);
         p.buyAction(2);
         assertFalse(p.getAction() == 2);
@@ -101,35 +105,94 @@ public class AutoPlayerTest {
 
     @Test()
     public void workerToBuilding() {
-        Worker w1 = new Worker("Test",0,1,2,3,4);
-        Building b1 = new Building("name",1,2,3,0,3,5);
+        IWorker w1 = new Worker("Test",0,1,2,3,4);
+        IBuilding b1 = new Building("name",1,2,3,0,3,5);
+        p.setCoin(30);
+        p.setAction(3);
+        //addBuilding vérifie que les cartes sont dans la main du joueur
+        //donc on doit ajouter ces cartes au joueur
+        p.getBoard().getFiveBuildingCards().add(b1);
+        p.getBoard().getFiveWorkerCards().add(w1);
+        p.hireWorker(w1);
         p.addBuilding(b1);
         p.workerToBuilding(w1,b1);
-        assertFalse(p.getStartedBuilding().contains(b1));
-        assertTrue(p.getBuildingsCards().contains(b1));
-        p.openBuilding(b1);
-        p.workerToBuilding(w1,b1);
+
         assertTrue(p.getStartedBuilding().contains(b1));
-        assertFalse(p.getBuildingsCards().contains(b1));
-        ArrayList<Card> worker = b1.getWorkerOn();
+        assertTrue(p.getBuildingsCards().contains(b1));
+        ArrayList<IWorker> worker = b1.getWorkerOn();
         assertTrue(b1.getWorkerOn().contains(w1));
+
+        p.setCoin(0);
+        p.setAction(3);
+        IWorker w2 = new Worker("Test",0,1,2,3,4);
+        p.getBoard().getFiveWorkerCards().add(w2);
+        p.hireWorker(w2);
+        p.workerToBuilding(w2,b1);
+        assertFalse(b1.getWorkerOn().contains(w2));
+
     }
 
     @Test()
     public void getBuildingsCards() {
-        Building b2 = new Building("name",1,2,3,0,3,5);
+        IBuilding b2 = new Building("name",1,2,3,0,3,5);
         ArrayList<IBuilding> arr = new ArrayList<IBuilding>();
         arr.add(b2);
+        p.setAction(3);
+        p.getBoard().getFiveBuildingCards().add(b2);
         p.addBuilding(b2);
         assertEquals(arr,p.getBuildingsCards());
     }
 
     @Test()
     public void getWorkerCards() {
-        Worker w1 = new Worker("Test",0,1,2,3,4);
+        IWorker w1 = new Worker("Test",0,1,2,3,4);
         p.setCoin(30);
+        //le worker doit être sur le board pour être recruté
+        p.getBoard().getFiveWorkerCards().add(w1);
         p.hireWorker(w1);
         assertTrue(p.getWorkerCards().contains(w1));
         assertTrue(p.getCoin() == 26);
+    }
+
+    @Test()
+    public void getRemoveBuilding() {
+        IWorker w1 = new Worker("Test",0,1,2,3,4);
+        IWorker w2 = new Worker("Test",0,1,2,3,4);
+        IBuilding b1 = new Building("name",1,2,3,0,3,5);
+        p.setCoin(30);
+        p.setAction(50);
+        p.getBoard().getFiveBuildingCards().add(b1);
+        p.getBoard().getFiveWorkerCards().add(w1);
+        p.getBoard().getFiveWorkerCards().add(w2);
+        p.hireWorker(w1);
+        p.addBuilding(b1);
+        p.hireWorker(w2);
+
+        p.setAction(10);
+        assertTrue(p.getRemoveBuilding(b1) == 1);
+        p.workerToBuilding(w1,b1);
+
+        assertTrue(p.getAction() == 9);
+        assertTrue(p.getRemoveBuilding(b1) == 2);
+        p.workerToBuilding(w2,b1);
+        assertTrue(p.getAction() == 7);
+    }
+
+    @Test()
+    public void finishBuilding() {
+        IWorker w1 = new Worker("Test",0,1,2,3,4);
+        IBuilding b1 = new Building("name",0,1,1,1,3,5);
+        p.setCoin(30);
+        p.setAction(50);
+        p.getBoard().getFiveBuildingCards().add(b1);
+        p.getBoard().getFiveWorkerCards().add(w1);
+        p.hireWorker(w1);
+        assertTrue(p.getCoin() == 26);
+        p.addBuilding(b1);
+        p.workerToBuilding(w1,b1);
+        assertTrue(p.getWorkerCards().contains(w1));
+        assertFalse(p.getBuildingsCards().contains(b1));
+        assertTrue(p.getCoin() == 25); //cout worker + gain batiment
+        assertTrue(p.getPoint() == 5);
     }
 }

@@ -21,8 +21,8 @@ public abstract class Player implements Serializable {
 
 	/**
 	 * Generate a new player
-	 * @param name
-	 * @param board
+	 * @param name the name of the player
+	 * @param board the current board
 	 */
 	public Player(String name, Board board) {
 		if(name != null && board != null) {
@@ -49,9 +49,11 @@ public abstract class Player implements Serializable {
 		return this.name;
 	}
 
+	/**
+	 * initialize a new turn
+	 **/
 	public void initializeTurn() {
 		this.building_turn.clear();
-		this.action = 3;
 	}
 
 	/**
@@ -85,7 +87,7 @@ public abstract class Player implements Serializable {
 
 	/**
 	 * open a building and add it to the arraylist
-	 * @param building
+	 * @param building the building
 	 */
 	public void openBuilding(IBuilding building) {
 		this.started_buildings.add(building);
@@ -93,7 +95,7 @@ public abstract class Player implements Serializable {
 
 	/**
 	 * hire a new worker from the 5 on the top
-	 * @param worker
+	 * @param worker the worker
 	 */
 	public void hireWorker(IWorker worker) {
 		if(this.coin-worker.getCost() >= 0 && worker != null) {
@@ -157,8 +159,8 @@ public abstract class Player implements Serializable {
 
 	/**
 	 * make a worker work on a certain building
-	 * @param building
-	 * @param worker
+	 * @param building the building
+	 * @param worker the worker
 	 */
 	public void workerToBuilding(IWorker worker, IBuilding building) {
 		if(worker != null && building != null) {
@@ -227,7 +229,7 @@ public abstract class Player implements Serializable {
 
 	/**
 	 * change action to some coins
-	 * @param nbAction
+	 * @param nbAction the nbaction
 	 */
 	public void actionToCoins(int nbAction) {
 		if(this.action - nbAction >= 0 && nbAction > 0) {
@@ -250,7 +252,7 @@ public abstract class Player implements Serializable {
 
 	/**
 	 * buy action from coin
-	 * @param nbAction
+	 * @param nbAction the nbaction
 	 */
 	public void buyAction(int nbAction) {
 		if(this.coin >= nbAction * 5 && nbAction > 0) {
@@ -346,26 +348,30 @@ public abstract class Player implements Serializable {
 	public void printWorkers(int begin) {
 		int rightBorder = 34;
 
-		DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
+		if(this.worker_cards.size() > 0) {
+			DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
 
-		for(int i = 0; i < this.worker_cards.get(0).toString().lines().count(); i++) {
-			if(i == 0) {
-				for(int j = begin; (j < begin+5 && j < this.worker_cards.size()); j++) {
-					String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
-					System.out.print("\033[93m" + count + "\t\033[0m");
+			for(int i = 0; i < this.worker_cards.get(0).toString().lines().count(); i++) {
+				if(i == 0) {
+					for(int j = begin; (j < begin+5 && j < this.worker_cards.size()); j++) {
+						String count = DesignString.centerString(rightBorder, String.format("~ " + (j+1) + " ~"));
+						System.out.print("\033[93m" + count + "\t\033[0m");
+					}
+					System.out.println();
+				}
+				int x = begin;
+				while(x < this.worker_cards.size() && x < begin+5) {
+					IWorker b = this.worker_cards.get(x);
+					String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
+					System.out.print(line + "\t");
+					x++;
 				}
 				System.out.println();
 			}
-			int x = begin;
-			while(x < this.worker_cards.size() && x < begin+5) {
-				IWorker b = this.worker_cards.get(x);
-				String line = b.toString().substring(0+(rightBorder+1)*i, rightBorder+(rightBorder+1)*i);
-				System.out.print(line + "\t");
-				x++;
-			}
-			System.out.println();
+			DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
+		} else {
+			DesignString.printBorder(50, "Aucun ouvrier disponible !", "\033[1;91m");
 		}
-		DesignString.printBorder(190,"VOS OUVRIERS DISPONIBLES", "\033[0;91m");
 	}
 
 	/**

@@ -33,13 +33,13 @@ public class WorkerTest {
     }
 
     @Test()
-    public void getWood() {
-        assertTrue(w.getWood() == 1);
+    public void getStone() {
+        assertTrue(w.getStone() == 1);
     }
 
     @Test()
-    public void getStone() {
-        assertTrue(w.getStone() == 2);
+    public void getWood() {
+        assertTrue(w.getWood() == 2);
     }
 
     @Test()

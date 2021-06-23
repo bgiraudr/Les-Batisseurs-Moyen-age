@@ -50,6 +50,7 @@ public class HumanPlayer extends Player {
 			System.out.println("│ 8 - Échanger des actions contre des écus      │");
 			System.out.println("│ 9 - Afficher les profils                      │");
 			System.out.println("│ 10 - Quitter et sauvegarder                   │");
+			System.out.println("│ 11 - Quitter                                  │");
 			System.out.println("╰───────────────────────────────────────────────╯");
 			System.out.println();
 			System.out.print("> ");
@@ -166,7 +167,7 @@ public class HumanPlayer extends Player {
 			if(input.equals("4")) {
 				if(this.getBuildingsCards().size() > 5) {
 					int i = 0;
-					DesignString.printBorder(70,"Vous avez " + this.getBuildingsCards().size() + " bâtiments non commencés");
+					DesignString.printBorder(70,"Vous avez " + this.getBuildingsCards().size() + " bâtiments");
 
 					String choix = "";
 					while(!choix.equals("R")) {
@@ -194,7 +195,7 @@ public class HumanPlayer extends Player {
 			if(input.equals("5")) {
 				if(this.getStartedBuilding().size() > 5) {
 					int i = 0;
-					DesignString.printBorder(70,"Vous avez " + this.getStartedBuilding().size() + " bâtiments non commencés");
+					DesignString.printBorder(70,"Vous avez " + this.getStartedBuilding().size() + " bâtiments commencés");
 
 					String choix = "";
 					while(!choix.equals("R")) {
@@ -259,7 +260,7 @@ public class HumanPlayer extends Player {
 					this.workerToBuilding(w,b);
 					if(this.getCoin() < ancien) {
 						DesignString.printBorder(25,"Succès !", "\033[1;92m");
-						DesignString.printBorder(25,"Vous perdez " + (this.getRemoveBuilding(b)+1) + " action", "\033[0;91m");
+						DesignString.printBorder(25,"Vous perdez " + (this.getRemoveBuilding(b)-1) + " action", "\033[0;91m");
 					} else {
 						DesignString.printBorder(35,"Pas assez d'écus ou d'action", "\033[1;91m");
 					}
@@ -314,6 +315,9 @@ public class HumanPlayer extends Player {
 			if(input.equals("10")) {
 				this.getBoard().getGame().saveGame();
 				continuer = false;
+			}
+			if(input.equals("11")) {
+				System.exit(0);
 			}
 		}
 	}

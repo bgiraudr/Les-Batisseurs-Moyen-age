@@ -155,7 +155,7 @@ public class Building extends Card implements IBuilding {
 		String knowledgeString = String.format("│ %-" + rightBorder + "s │\n", checkRessources()[2] + "/" + this.getKnowledge() + " savoir");
 		String tileString = String.format("│ %-" + rightBorder + "s │\n", checkRessources()[3] + "/" + this.getTile() + " tuiles");
 
-		String ret = topLine + top + "\n" + nbWorkerString + transiLine + coinString + pointString + transiLine + stoneString + woodString + knowledgeString + tileString + botLine;
+		String ret = topLine + top + "\n" + transiLine + coinString + pointString + nbWorkerString + transiLine + stoneString + woodString + knowledgeString + tileString + botLine;
 
 		return ret;
 	}

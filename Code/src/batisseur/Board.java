@@ -23,6 +23,10 @@ public class Board implements Serializable {
 	private Game game;
 	private Random rand;
 
+	/**
+	 * generate the board
+	 * @param game the game
+	 **/
 	public Board(Game game) {
 		this.rand = new Random();
 
@@ -34,9 +38,9 @@ public class Board implements Serializable {
 		this.five_worker_cards = new ArrayList<IWorker>();
 		this.five_building_cards = new ArrayList<IBuilding>();
 
-		this.createWorkerCards("../data/cards/ouvriers.txt");
-		this.createBuildingCards("../data/cards/batiments.txt");
-		this.createMachineCards("../data/cards/machines.txt");
+		this.createWorkerCards("./data/cards/ouvriers.txt");
+		this.createBuildingCards("./data/cards/batiments.txt");
+		this.createMachineCards("./data/cards/machines.txt");
 
 		this.generateBoardWorker();
 		this.generateBoardBuilding();
@@ -157,6 +161,10 @@ public class Board implements Serializable {
 		return this.machine_cards;
 	}
 
+	/**
+	 * remove a worker
+	 * @param worker the worker to remove
+	 **/
 	public void removeWorkerCards(IWorker worker) {
 		this.five_worker_cards.remove(worker);
 	}
@@ -200,8 +208,12 @@ public class Board implements Serializable {
 		return ret;
 	}
 
+	/**
+	 * generate the first apprenti
+	 * @return the generated card
+	 **/
 	public Card generateInitApprenti() {
-		Card card = pickRandomCard(this.worker_cards);
+		Card card = pickRandomCard(getApprentiCard());
 		this.worker_cards.remove(card);
 		return card;
 	}

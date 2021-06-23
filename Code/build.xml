@@ -1,31 +1,31 @@
 <project name="LesBatisseurs" default="run" basedir=".">
-	<property name="src" location="src"/>
-	<property name="build" location="build"/>
-	<property name="jar"  location="${build}/jar"/>
-	<property name="class"  location="${build}/class"/>
-	<property name="javadoc"  location="${build}/javadoc"/>
-	<property name="test" value="${build}/test"/>
-	<property name="mainClass" value="Batisseurs"/>
-	<property name="jarName" value="${mainClass}"/>
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="jar"  location="${build}/jar"/>
+    <property name="class"  location="${build}/class"/>
+    <property name="javadoc"  location="${build}/javadoc"/>
+    <property name="mainClass" value="GameLauncher"/>
+    <property name="version" value="1.0"/>
+    <property name="jarName" value="${mainClass}-${version}"/>
+    <property name="test" value="${build}/test"/>
 
-	<target name="init">
-		<mkdir dir="${build}"/>
-		<mkdir dir="${jar}"/>
-		<mkdir dir="${class}"/>
-		<mkdir dir="${test}"/>
-	</target>
+    <target name="init">
+        <!-- Create the files used to store the data -->
+        <mkdir dir="${build}"/>
+        <mkdir dir="${jar}"/>
+        <mkdir dir="${class}"/>
+        <mkdir dir="${test}"/>
+    </target>
 
-	<target name="clean">
-		<delete dir="${build}"/>
-	</target>
+    <target name="compile" depends="init" description="compile the source ">
+        <!-- Compile the code from ${src} and place it into ${class} exluding the test package -->
+        <javac srcdir="${src}" destdir="${class}" includeantruntime="false">
+            <exclude name="test/**"/>
+        </javac>
+    </target>
 
-	<target name="compile" depends="init">
-		<javac srcdir="${src}" destdir="${class}" includeantruntime="false">
-			<exclude name="test/**"/>
-		</javac>
-	</target>
-
-	<target name="jar" depends="compile">
+    <target name="jar" depends="compile" description="generate the distribution" >
+        <!-- Create the jar file with the compiled data in ${class}-->
         <jar jarfile="${jar}/${jarName}.jar" basedir="${class}">
             <manifest>
                 <attribute name="Main-Class" value="${mainClass}"/>
@@ -33,43 +33,51 @@
         </jar>
     </target>
 
-	<target name="run" depends="jar">
-		<java jar="${jar}/${jarName}.jar" fork="true"/>
-	</target>
-	
-	<target name="runF" depends="compile">
-		<java jar="${jar}/${jarName}.jar" fork="true"/>
-	</target>
 
-	<target name="javadoc">
-		<delete dir="${javadoc}"/>
-		<javadoc author="true"
-				 destdir="${javadoc}">
-			<fileset dir="${src}">
-				<include name="**"/>
-			</fileset>
-		</javadoc>
-	</target>
+    <target name="run" depends="jar">
+        <!-- Run the built jar at ${jar} -->
+        <java jar="${jar}/${jarName}.jar" fork="true"/>
 
-	<target name="compile-test" depends="compile">
-		<javac srcdir="${src}/test" destdir="${test}" includeantruntime="true">
-			<classpath>
-				<pathelement path="${class}"/>
-			</classpath>
-		</javac>
-	</target>
+    </target>
 
-	<target name="test" depends="compile-test">
-		<junit printsummary="on" haltonfailure="off" fork="true" includeantruntime="true">
-			<classpath>
-				<pathelement path="${test}"/>
-				<pathelement path="${class}"/>
-				<pathelement path="${java.class.path}"/>
-			</classpath>
-			<formatter type="brief"/>
-			<batchtest todir="${test}">
-				<fileset dir="${src}" includes="test/*.java"/>
-			</batchtest>
-		</junit>
-	</target>
+    <target name="clean">
+        <!-- Clean all the build files -->
+        <delete dir="build"/>
+    </target>
+
+    <target name="javadoc">
+        <!-- Create the javadoc of the code -->
+        <delete dir="${javadoc}"/>
+        <javadoc author="true"
+                 private="true"
+                 destdir="${javadoc}">
+            <fileset dir="${src}">
+                <include name="**"/>
+            </fileset>
+        </javadoc>
+    </target>
+
+    <target name="test-compile" depends="compile" description="compile the test ">
+        <!-- Compile the code from ${src}/test and place it into ${test} -->
+        <javac srcdir="${src}/test" destdir="${test}" includeantruntime="true">
+            <classpath>
+                <pathelement path="${class}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="test" depends="test-compile">
+        <!-- Launch all the test classes -->
+        <junit printsummary="on" haltonfailure="off" fork="true" includeantruntime="true">
+            <classpath>
+                <pathelement path="${test}"/>
+                <pathelement path="${class}"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+            <formatter type="brief"/>
+            <batchtest todir="${test}">
+                <fileset dir="${src}" includes="test/*.java"/>
+            </batchtest>
+        </junit>
+    </target>
 </project>

@@ -58,7 +58,15 @@ public class Machine extends Card implements IWorker, IBuilding {
 	 * @param worker the worker you want to add on
 	 **/
 	public void addWorkerOn(IWorker worker) {
-		this.workerOn.add(worker);
+		if(worker instanceof Machine) {
+			if(((Machine)(worker)).isConstruct()) {
+				this.workerOn.add(worker);
+			} else {
+				System.err.println("addWorkerOn : the current Machine is broken");
+			}
+		} else {
+			this.workerOn.add(worker);
+		}
 	}
 
 	/**
@@ -163,7 +171,7 @@ public class Machine extends Card implements IWorker, IBuilding {
 	 * @return a list of String containing the information about the buff the machine gives
 	 * [number, title]
 	 **/
-	private String[] getMachineBuff() {
+	public String[] getMachineBuff() {
 		String ret[] = new String[2];
 		if(this.stoneConstruct > 0) {
 			ret[0] = this.stoneConstruct + "";
@@ -185,8 +193,8 @@ public class Machine extends Card implements IWorker, IBuilding {
 	}
 
 	/**
-	 * get the progress that the building is missing
-	 * @return an array containing the progress that the building is missing
+	 * get the progress that the building has
+	 * @return an array containing the progress that the building has
 	 **/
 	public int[] checkRessources() {
 		int[] ret = new int[4];

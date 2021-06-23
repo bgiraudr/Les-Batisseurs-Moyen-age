@@ -7,6 +7,10 @@ import util.RWGame;
 import java.io.File;
 import util.DesignString;
 import java.io.IOException;
+import java.awt.*;
+
+import javax.swing.*;
+import view.menu.*;
 
 public class Batisseurs {
 
@@ -14,19 +18,15 @@ public class Batisseurs {
 	private Game gameplay;
 	private UI gui;
 
-	private static final String PATH_TITLE = "../data/files/titreBat.txt";
-	private static final String PATH_MAIN_MENU = "../data/files/mainMenu.txt";
-	private static final String PATH_RULES = "../data/files/rules.txt";
-	private static final String SAVE_FOLDER = "../data/saves/";
+	private static final String PATH_TITLE = "./data/files/titreBat.txt";
+	private static final String PATH_MAIN_MENU = "./data/files/mainMenu.txt";
+	private static final String SAVE_FOLDER = "./data/saves/";
 
 	/**
 	 * create and launch the game
-	 * @param playerName1 the first player name
-	 * @param playerName2 the second player name 
-	 * @param playerName3 the third player name 
-	 * @param playerName4 the fourth player name 
 	 */
 	public Batisseurs() {
+		this.gui = UI.TUI;
 		this.menuAccueil();
 	}
 
@@ -41,6 +41,7 @@ public class Batisseurs {
 	 */
 	private void createGame(String playerName1, String playerName2, String playerName3, String playerName4, Mode mode, UI gui) {
 		this.gameplay = new Game(playerName1, playerName2, playerName3, playerName4, mode, gui);
+		this.gameplay.start();
 	}
 
 	/**
@@ -52,8 +53,9 @@ public class Batisseurs {
 		ReadFile.printFile(PATH_MAIN_MENU);
 		System.out.println();
 		Scanner scan = new Scanner(System.in);
+
 		int choix = 0;
-		while(choix < 1 || choix > 6) {
+		while(choix < 1 || choix > 5) {
 			System.out.print("> ");
 			choix = scan.nextInt();
 
@@ -65,14 +67,26 @@ public class Batisseurs {
 					launchPartie();
 					break;
 				case 3:
-					ReadFile.printFile(PATH_RULES);
+					try {
+						Desktop desktop = Desktop.getDesktop();
+						File file = new File("./data/files/regles.pdf");
+						desktop.open(file);
+					} catch(IOException e) {
+						e.printStackTrace();
+					}
 					break;
 				case 4:
+					this.gui = UI.GUI;
+					DesignString.printBorder("/!\\ LA VERSION GRAPHIQUE N'EST PAS FONCTIONNELLE EN PARTIE");
+					DesignString.printBorder("cependant vous pouvez en créer une et voir les cartes sur la table");
+					DesignString.printBorder("aucune interaction n'a pu être programmée faute de temps");
+					SwingUtilities.invokeLater(new Runnable() {
+			            public void run() {
+			                new Fenetre();
+			            }
+			        });
 					break;
 				case 5:
-					this.gui = UI.GUI;
-					break;
-				case 6:
 					System.out.println("À la prochaine !");
 					break;
 				default:
@@ -152,7 +166,7 @@ public class Batisseurs {
 			DesignString.printBorder(35,"Entre le nom de ta sauvegarde", "\033[0;92m");
 			System.out.print("> ");
 			String saveFile = scan.next();
-			Game game = RWGame.readGame("../data/saves/" + saveFile + ".sav");
+			Game game = RWGame.readGame(SAVE_FOLDER + saveFile + ".sav");
 			this.gameplay = game;
 			game.start();
 		} catch(IOException e) {
