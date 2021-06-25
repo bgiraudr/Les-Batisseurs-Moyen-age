@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"batisseur"},{"l":"controler"},{"l":"test"},{"l":"util"},{"l":"view.ingame"},{"l":"view.menu"}];updateSearchResults();

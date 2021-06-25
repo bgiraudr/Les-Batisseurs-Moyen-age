@@ -1,6 +1,0 @@
-Testsuite: test.BuildingTest
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0,044 sec
-
-------------- Standard Error -----------------
-addWorkerOn : the current Machine is broken
-------------- ---------------- ---------------
