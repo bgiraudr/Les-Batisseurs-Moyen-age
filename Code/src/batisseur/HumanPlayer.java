@@ -256,9 +256,9 @@ public class HumanPlayer extends Player {
 				}
 
 				if(!choix.equals("R")) {
-					int ancien = this.getCoin();
+					int ancien = this.getAction();
 					this.workerToBuilding(w,b);
-					if(this.getCoin() < ancien) {
+					if(this.getAction() < ancien) {
 						DesignString.printBorder(25,"Succès !", "\033[1;92m");
 						DesignString.printBorder(25,"Vous perdez " + (this.getRemoveBuilding(b)-1) + " action", "\033[0;91m");
 					} else {
